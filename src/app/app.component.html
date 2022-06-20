@@ -1,0 +1,40 @@
+
+<div class="wrapper">
+  <!-- Sidebar  -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <h3>Task Management</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+      <li class="active">
+        <a (click)="routeToAddOrganization()"  class="cursor-pointer">Add Organization</a>
+      </li>
+
+      <li>
+        <a   (click)="routeToAddProject()" class="cursor-pointer">Add Project</a>
+      </li>
+      <li>
+        <a (click)="routeToSignUp()">Sign Up</a>
+      </li>
+      <li>
+        <a (click)="routeToLogin()">Sign In</a>
+      </li>
+      <li>
+        <a (click)="routeToRequestClarification()" >Request Clarification</a>
+      </li>
+      <li>
+        <a href="#">Clarification Table</a>
+      </li>
+    </ul>
+
+  </nav>
+
+  <!-- Page Content  -->
+  <div id="content">
+
+<router-outlet></router-outlet>
+
+  </div>
+</div>
+
