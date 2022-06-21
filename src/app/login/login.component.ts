@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SignupService} from "../signup/signup.service";
 import {Login} from "./login";
 import {LoginService} from "./login.service";
+import {ObjectUtil} from "../ObjectUtil";
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   login: Login
   logins: Login
   loginData: any
+  signUpData: any
   addForm: FormGroup
   @Input() formValue: Organization
   submitted: false
@@ -22,13 +24,20 @@ export class LoginComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private formBuilder: FormBuilder,
+    private signupService: SignupService,
   ) { }
 
   ngOnInit(): void {
-    this.addForm = this.formBuilder.group({
-      userName: [undefined, Validators.required],
-      password: [undefined, Validators.required],
-    })
+    this.formMaker();
+    if (!ObjectUtil.isEmpty(this.formValue)) {
+      this.login = this.addForm.value;
+      this.formMaker();
+
+    }
+    this.getUserData();
+
+
+
   }
 
   addLogin() {
@@ -49,6 +58,28 @@ export class LoginComponent implements OnInit {
         this.logins = response;
         this.loginData = response;
         console.log(this.loginData, 'login Data')
+
+      },
+      error => {
+        console.log(error)
+      }
+    )
+  }
+
+  private formMaker() {
+    this.addForm = this.formBuilder.group({
+      userName: [undefined, Validators.required],
+      password: [undefined, Validators.required],
+    })
+
+  }
+
+  getUserData() {
+    console.log('hello')
+    this.signupService.getUser().subscribe(
+      response => {
+        this.signUpData = response;
+        console.log(this.signUpData, 'signUp data')
 
       },
       error => {

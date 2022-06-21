@@ -13,7 +13,7 @@ export class SignupService {
   constructor(private http: HttpClient) { }
 
   public getUser(): Observable<SignUp>{
-    return this.http.get<SignUp>(`${this.ApiServiceUrl}/api/signUp/all`)
+    return this.http.get<SignUp>(`${this.ApiServiceUrl}/api/users/all`)
   }
 
   public addUser(signUp: SignUp): Observable<SignUp>{

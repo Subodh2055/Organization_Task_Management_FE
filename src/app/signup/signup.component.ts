@@ -31,13 +31,13 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.formMaker();
     if (!ObjectUtil.isEmpty(this.formValue)) {
       this.signUp = this.addForm.value;
       this.formMaker();
     }
     this.getOrganizationData();
+
   }
 
   addUser() {
@@ -47,25 +47,11 @@ export class SignupComponent implements OnInit {
       this.signupService.addUser(this.addForm.value).subscribe(
         response => {
           console.log(response, 'response')
-          this.getUserData();
         })
     }
   }
 
-  getUserData() {
-    this.signupService.getUser().subscribe(
-      response => {
-        console.log(response, 'signUps');
-        this.signUps = response;
-        this.signUpData = response;
-        console.log(this.signUpData, 'signUp data')
 
-      },
-      error => {
-        console.log(error)
-      }
-    )
-  }
   getOrganizationData() {
     this.addOrganizationServiceService.getOrganization().subscribe(
       response => {
