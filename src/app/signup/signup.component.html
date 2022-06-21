@@ -10,11 +10,7 @@
       <input class="form-control" id="designation" formControlName='designation' type="text"
              placeholder='Enter Your Designation'/>
     </div>
-    <div class="col-md-4">
-      <label for="organizationName">Organization Name</label>
-      <input class="form-control" id="organizationName" formControlName='organizationName' type="text"
-             placeholder='Enter Your Email'/>
-    </div>
+
     <div class="col-md-4">
       <label for="email">Email</label>
       <input class="form-control" id="email" formControlName='email' type="email" placeholder='Enter Your Email'/>
@@ -33,11 +29,19 @@
       <label for="password">Password</label>
       <input class="form-control" id="password" formControlName='password' type="password"
              placeholder='Enter Your Password'/>
-    </div>
+    </div><pre></pre>
     <div class="col-md-4">
       <label for="confirmPassword">Confirm Password</label>
       <input class="form-control" formControlName='passwordConfirm' id="confirmPassword" type="password"
              placeholder='Enter Your Confirm Password'/>
+    </div>
+    <div class="col-md-4">
+      <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
+        <option [value]="null" selected hidden>Select Organization</option>
+        <option *ngFor="let org of organizationData"
+                [ngValue]="org">
+          {{org.organizationName}}
+      </select>
     </div>
   </div>
 <div class="row">

@@ -19,6 +19,6 @@ export class LoginService {
   }
 
   public addLogin(login: Login): Observable<Login>{
-    return this.http.post<Login>(`${this.ApiServiceUrl}/login/add`, login)
+    return this.http.post<Login>(`${this.ApiServiceUrl}/api/auth/signin`, login)
   }
 }
