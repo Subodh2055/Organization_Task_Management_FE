@@ -1,0 +1,26 @@
+<form [formGroup]="addForm">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-8">
+<!--        <label for="organizationName">Organization Name</label>-->
+<!--        <input type="text" id="organizationName" class='form-control' formControlName="organizationName" ngModel/>-->
+        <div class="col-md-6">
+          <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
+            <option [value]="null" selected hidden>Select Organization</option>
+            <option *ngFor="let org of organizationData"
+                    [ngValue]="org">
+              {{org.organizationName}}
+          </select> <pre></pre>
+          <label for="projectName">Project Name</label>
+          <input type="text" id="projectName" class='form-control' formControlName='projectName'
+                 placeholder='Enter ProjectName' ngModel/>
+        </div>
+
+
+
+      </div>
+      <button nbButton Class="btn btn-warning" (click)="addProject()">Add Organization</button>
+    </div>
+  </div>
+</form>
+

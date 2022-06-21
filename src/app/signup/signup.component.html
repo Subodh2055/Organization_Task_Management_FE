@@ -1,0 +1,48 @@
+<form [formGroup]="addForm">
+  <div class="row">
+    <div class="col-md-4">
+      <label for="fullName">Full Name</label>
+      <input class='form-control' id="fullName" formControlName='fullName' type="text"
+             placeholder='Enter Your FullName'/>
+    </div>
+    <div class="col-md-4">
+      <label for="designation">Designation</label>
+      <input class="form-control" id="designation" formControlName='designation' type="text"
+             placeholder='Enter Your Designation'/>
+    </div>
+    <div class="col-md-4">
+      <label for="organizationName">Organization Name</label>
+      <input class="form-control" id="organizationName" formControlName='organizationName' type="text"
+             placeholder='Enter Your Email'/>
+    </div>
+    <div class="col-md-4">
+      <label for="email">Email</label>
+      <input class="form-control" id="email" formControlName='email' type="email" placeholder='Enter Your Email'/>
+    </div>
+    <div class="col-md-4">
+      <label for="mobile">Mobile</label>
+      <input class="form-control" id="mobile" formControlName='mobile' type="text" placeholder='Enter Your Mobile'/>
+    </div>
+    <div class="col-md-4">
+
+      <label for="userName">UserName</label>
+      <input class="form-control" id="userName" formControlName='userName' type="text"
+             placeholder='Enter Your UserName'/>
+    </div>
+    <div class="col-md-4">
+      <label for="password">Password</label>
+      <input class="form-control" id="password" formControlName='password' type="password"
+             placeholder='Enter Your Password'/>
+    </div>
+    <div class="col-md-4">
+      <label for="confirmPassword">Confirm Password</label>
+      <input class="form-control" formControlName='passwordConfirm' id="confirmPassword" type="password"
+             placeholder='Enter Your Confirm Password'/>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-md-12 d-flex justify-content-end">
+    <button nbButton Class="btn btn-warning" (click)="addUser()">Register User</button>
+  </div>
+</div>
+</form>

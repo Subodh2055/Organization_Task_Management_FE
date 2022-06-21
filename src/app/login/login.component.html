@@ -1,0 +1,12 @@
+<form [formGroup]="addForm">
+  <div class="form-group">
+    <label className='form-label'>User Name</label><br>
+    <input required type="text" className='form-control' formControlName='username' placeholder='Enter User Name' ngModel/>
+  </div><pre></pre>
+  <div class="form-group">
+    <label className='form-label'>Password</label><br>
+    <input required type="password" className='form-control' formControlName='password' placeholder='Enter password' ngModel/>
+  </div><pre></pre>
+  <button nbButton Class="btn btn-warning" (click)="addLogin()">Sign In</button>
+
+</form>
