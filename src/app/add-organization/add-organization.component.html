@@ -4,26 +4,56 @@
     <div class="col-md-12 ">
       <!--        <img src="assets/pricing-table7.webp" class="img-fluid img-thumbnail" >-->
       <div class="col-md-4">
+        <div class="form-group" >
         <label for="organizationName">Organization Name</label>
-        <input class='form-control' id="organizationName" formControlName='organizationName'
-               placeholder='Enter Organization Name'/>
+        <input class='form-control' id="organizationName"
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['organizationName']?.errors, 'is-valid': addFormControl['organizationName']?.valid }"
+               formControlName='organizationName'>
+          <span *ngIf="submitted || addFormControl['organizationName'].touched || addFormControl['organizationName'].dirty && addFormControl['organizationName'].invalid" class="info-msg text-danger">
+                <small *ngIf="addFormControl['organizationName'].errors && addFormControl['organizationName'].errors?.['required']">This is the required field.</small>
+            </span>
+      </div>
         <pre></pre>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input id="address"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['address']?.errors, 'is-valid': addFormControl['address']?.valid }"
+                 formControlName='address'/>
+          <span *ngIf="submitted || addFormControl['address'].touched || addFormControl['address'].dirty && addFormControl['address'].invalid" class="info-msg text-danger">
+                <small *ngIf="addFormControl['address'].errors && addFormControl['address'].errors?.['required']">This is the required field.</small>
+            </span>
+        </div><pre></pre>
+        <div class="form-group">
+          <label for="phone">Phone</label><br>
+          <input type="number"
+                 id="phone"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['phone']?.errors, 'is-valid': addFormControl['phone']?.valid }"
+                 formControlName='phone' ngModel/>
+          <span *ngIf="submitted || addFormControl['phone'].touched || addFormControl['phone'].dirty && addFormControl['phone'].invalid" class="info-msg text-danger">
+                <small *ngIf="addFormControl['phone'].errors && addFormControl['phone'].errors?.['required']">This is the required field.</small>
+            </span>
+        </div><pre></pre>
 
-        <label for="address">Address</label>
-        <input id="address" class='form-control' formControlName='address' placeholder='Enter Address' ngModel/>
-        <pre></pre>
+        <div class="form-group">
+          <label for="email">Email</label><br>
+          <input type="text"
+                 id="email"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': addFormControl['email']?.valid }"
+                 formControlName='email' ngModel/>
+          <span *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid" class="info-msg text-danger">
+                <small *ngIf="addFormControl['email'].errors && addFormControl['email'].errors?.['required']">This is the required field.</small>
+            </span>
+        </div><pre></pre>
+        <div class="form-group">
+          <label for="website">Website</label><br>
+          <input id="website"
+                 class='form-control'
+                 formControlName='website' ngModel/>
+        </div>
 
-        <label for="phone">Phone</label><br>
-        <input type="number" id="phone" class='form-control' formControlName='phone' placeholder='Enter Number'
-               ngModel/>
-        <pre></pre>
-
-        <label for="email">Email</label><br>
-        <input type="text" id="email" class='form-control' formControlName='email' placeholder='Enter Email' ngModel/>
-        <pre></pre>
-
-        <label for="website">Website</label><br>
-        <input id="website" class='form-control' formControlName='website' placeholder='Enter Website' ngModel/>
         <pre></pre>
         <button nbButton Class="btn btn-warning" (click)="addOrganization()">Add Organization</button>
       </div>

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AddOrganizationServiceService} from "./add-organization-service.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Organization} from "./Organization";
 import {ObjectUtil} from "../ObjectUtil";
@@ -16,16 +16,15 @@ export class AddOrganizationComponent implements OnInit {
   organizations: Organization[];
   organizationData: any
   @Input() formValue: Organization
-  submitted: false
-
+  submitted:boolean = false
+  organizationName: any
   addForm: FormGroup
   constructor(
     private addOrganizationServiceService: AddOrganizationServiceService,
     private formBuilder: FormBuilder,
     private route: Router,
 
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
 
@@ -54,18 +53,20 @@ export class AddOrganizationComponent implements OnInit {
 
   private formMaker() {
     this.addForm = this.formBuilder.group({
-      organizationName: [undefined, Validators.required],
-      address: [undefined, Validators.required],
-      phone: [undefined, Validators.required],
-      email: [undefined, Validators.required],
-      website: [undefined, Validators.required],
+      organizationName: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
+      website: [''],
     })
 
   }
 
   addOrganization() {
+    this.submitted = true;
+    console.log("kjadshfkjhadsfkjadshfkjhasdkfjhasdfkjhasdfkjashdfkjashdkfjhasdkfjashdkfj")
     if (this.addForm.invalid) {
-      this.submitted = false
+      // this.submitted = false
     } else {
       this.addOrganizationServiceService.addOrganization(this.addForm.value).subscribe(
         response => {
@@ -74,4 +75,7 @@ export class AddOrganizationComponent implements OnInit {
     }
   }
 
+  get addFormControl(): { [key: string]: AbstractControl } {
+    return this.addForm.controls;
+  }
 }

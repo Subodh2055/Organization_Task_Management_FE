@@ -14,8 +14,6 @@ import {ObjectUtil} from "../ObjectUtil";
 export class SignupComponent implements OnInit {
 
   signUp: SignUp;
-  signUps: SignUp;
-  signUpData: any
   @Input() formValue: Organization
   submitted: false
 
