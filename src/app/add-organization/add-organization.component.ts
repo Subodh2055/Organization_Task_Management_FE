@@ -16,15 +16,16 @@ export class AddOrganizationComponent implements OnInit {
   organizations: Organization[];
   organizationData: any
   @Input() formValue: Organization
-  submitted:boolean = false
+  submitted: boolean = false
   organizationName: any
   addForm: FormGroup
+
   constructor(
     private addOrganizationServiceService: AddOrganizationServiceService,
     private formBuilder: FormBuilder,
     private route: Router,
-
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
 
@@ -50,13 +51,12 @@ export class AddOrganizationComponent implements OnInit {
   }
 
 
-
   private formMaker() {
     this.addForm = this.formBuilder.group({
       organizationName: ['', Validators.required],
       address: ['', Validators.required],
       phone: ['', Validators.required],
-      email: ['', Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
+      email: ['', Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
       website: [''],
     })
 
@@ -64,9 +64,7 @@ export class AddOrganizationComponent implements OnInit {
 
   addOrganization() {
     this.submitted = true;
-    console.log("kjadshfkjhadsfkjadshfkjhasdkfjhasdfkjhasdfkjashdfkjashdkfjhasdkfjashdkfj")
     if (this.addForm.invalid) {
-      // this.submitted = false
     } else {
       this.addOrganizationServiceService.addOrganization(this.addForm.value).subscribe(
         response => {

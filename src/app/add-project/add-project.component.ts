@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Organization} from "../add-organization/Organization";
 import {Project} from "./Project";
 import {ProjectService} from "./project.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ObjectUtil} from "../ObjectUtil";
 import {Router} from "@angular/router";
 import {AddOrganizationServiceService} from "../add-organization/add-organization-service.service";
@@ -18,7 +18,7 @@ export class AddProjectComponent implements OnInit {
   projects: Project
   projectData: any
   @Input() formValue: Project
-  submitted: false
+  submitted: boolean = false
   addForm: FormGroup
   organizationData: any
 
@@ -28,7 +28,8 @@ export class AddProjectComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: Router,
     private addOrganizationServiceService: AddOrganizationServiceService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.formMaker();
@@ -42,23 +43,25 @@ export class AddProjectComponent implements OnInit {
 
   addProject() {
     console.log("hit this", this.addForm.value);
-    if(this.addForm.invalid){
-      this.submitted = false
-    }else{
+    this.submitted = true
+    if (this.addForm.invalid) {
+
+    } else {
       this.project = this.addForm.value;
       this.projectService.addProject(this.project).subscribe(
-        response=>{
-          console.log(response,'response')
+        response => {
+          console.log(response, 'response')
         })
     }
   }
-  getProjectData(){
+
+  getProjectData() {
     this.projectService.getProject().subscribe(
-      response=>{
-        console.log(response,'projects');
+      response => {
+        console.log(response, 'projects');
         this.projects = response;
         this.projectData = response;
-        console.log(this.projectData,'project data')
+        console.log(this.projectData, 'project data')
 
       },
       error => {
@@ -66,6 +69,7 @@ export class AddProjectComponent implements OnInit {
       }
     )
   }
+
   formMaker() {
     this.addForm = this.formBuilder.group({
       organizationName: [undefined, Validators.required],
@@ -73,6 +77,7 @@ export class AddProjectComponent implements OnInit {
 
     });
   }
+
   getOrganizationData() {
     this.addOrganizationServiceService.getOrganization().subscribe(
       response => {
@@ -84,5 +89,9 @@ export class AddProjectComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+
+  get addFormControl(): { [key: string]: AbstractControl } {
+    return this.addForm.controls;
   }
 }

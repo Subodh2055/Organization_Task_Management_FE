@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Organization} from "../add-organization/Organization";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SignupService} from "../signup/signup.service";
 import {Login} from "./login";
 import {LoginService} from "./login.service";
@@ -19,13 +19,14 @@ export class LoginComponent implements OnInit {
   signUpData: any
   addForm: FormGroup
   @Input() formValue: Organization
-  submitted: false
+  submitted: boolean = false
 
   constructor(
     private loginService: LoginService,
     private formBuilder: FormBuilder,
     private signupService: SignupService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.formMaker();
@@ -37,20 +38,21 @@ export class LoginComponent implements OnInit {
     this.getUserData();
 
 
-
   }
 
   addLogin() {
+    this.submitted = true
     if (this.addForm.invalid) {
-    this.submitted = false
-  } else {
-    this.loginService.addLogin(this.addForm.value).subscribe(
-      response => {
-        console.log(response, 'response')
-      })
-  }
+
+    } else {
+      this.loginService.addLogin(this.addForm.value).subscribe(
+        response => {
+          console.log(response, 'response')
+        })
+    }
 
   }
+
   getLoginData() {
     this.loginService.getLogin().subscribe(
       response => {
@@ -66,10 +68,14 @@ export class LoginComponent implements OnInit {
     )
   }
 
+  get addFormControl(): { [key: string]: AbstractControl } {
+    return this.addForm.controls;
+  }
+
   private formMaker() {
     this.addForm = this.formBuilder.group({
-      userName: [undefined, Validators.required],
-      password: [undefined, Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     })
 
   }
@@ -87,4 +93,5 @@ export class LoginComponent implements OnInit {
       }
     )
   }
+
 }

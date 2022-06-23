@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -17,19 +17,23 @@ export class AppComponent {
     this.route.navigate(['add-organization'])
   }
 
-  routeToAddProject(){
+  routeToAddProject() {
     this.route.navigate(['add-project'])
   }
 
-  routeToSignUp(){
+  routeToSignUp() {
     this.route.navigate(['signUp'])
   }
 
-  routeToLogin(){
+  routeToLogin() {
     this.route.navigate(['signIn'])
   }
 
-  routeToRequestClarification(){
-    this.route.navigate(['provide-clarification'])
+  routeToRequestClarification() {
+    this.route.navigate(['request-clarification'])
+  }
+
+  routeToClarificationTable() {
+    this.route.navigate(['clarification-table'])
   }
 }

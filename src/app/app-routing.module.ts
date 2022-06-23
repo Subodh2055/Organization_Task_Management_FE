@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {AddOrganizationComponent} from "./add-organization/add-organization.component";
 import {AddProjectComponent} from "./add-project/add-project.component";
 import {SignUp} from "./signup/SignUp";
 import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
+import {RequestClarificationComponent} from "./request-clarification/request-clarification.component";
 
 const routes: Routes = [
   {
@@ -12,17 +13,21 @@ const routes: Routes = [
     component: AddOrganizationComponent
   },
   {
-    path:'add-project',
+    path: 'add-project',
     component: AddProjectComponent
   },
   {
-    path:'signUp',
+    path: 'signUp',
     component: SignupComponent
   },
   {
-    path:'signIn',
+    path: 'signIn',
     component: LoginComponent
-  }
+  },
+  {
+    path: 'request-clarification',
+    component: RequestClarificationComponent
+  },
 ];
 
 @NgModule({

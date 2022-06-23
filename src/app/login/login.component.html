@@ -1,12 +1,38 @@
 <form [formGroup]="addForm">
-  <div class="form-group">
-    <label className='form-label'>User Name</label><br>
-    <input required type="text" className='form-control' formControlName='userName' placeholder='Enter User Name' ngModel/>
-  </div><pre></pre>
-  <div class="form-group">
-    <label className='form-label'>Password</label><br>
-    <input required type="password" className='form-control' formControlName='password' placeholder='Enter password' ngModel/>
-  </div><pre></pre>
-  <button nbButton Class="btn btn-warning" (click)="addLogin()">Sign In</button>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label className='form-label'>User Name</label><br>
+          <input required type="text"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['username']?.errors, 'is-valid': addFormControl['username']?.valid }"
+                 formControlName='username' ngModel><br>
+          <span
+            *ngIf="submitted || addFormControl['username'].touched || addFormControl['username'].dirty && addFormControl['username'].invalid"
+            class="info-msg text-danger">
+                <small *ngIf="addFormControl['username'].errors && addFormControl['username'].errors?.['required']">This is the required field.</small>
+            </span>
+        </div>
+        <pre></pre>
+        <div class="form-group">
+          <label className='form-label'>Password</label><br>
+          <input required type="password"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
+                 formControlName='password' ngModel/><br>
+          <span
+            *ngIf="submitted || addFormControl['password'].touched || addFormControl['password'].dirty && addFormControl['password'].invalid"
+            class="info-msg text-danger">
+                <small *ngIf="addFormControl['password'].errors && addFormControl['password'].errors?.['required']">This is the required field.</small>
+            </span>
+        </div>
+        <pre></pre>
+      </div>
 
+    </div>
+  </div>
+
+  <button nbButton Class="btn btn-warning" (click)="addLogin()">Sign In</button>
 </form>
+
