@@ -10,7 +10,7 @@
           *ngIf="submitted || addFormControl['organizationName'].touched || addFormControl['organizationName'].dirty && addFormControl['organizationName'].invalid"
           class="info-msg text-danger">
                 <small
-                  *ngIf="addFormControl['organizationName'].errors && addFormControl['organizationName'].errors?.['required']">This is the required field.</small>
+                  *ngIf="addFormControl['organizationName'].errors && addFormControl['organizationName'].errors?.['required']">Organization Name is required.</small>
             </span>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <span
           *ngIf="submitted || addFormControl['address'].touched || addFormControl['address'].dirty && addFormControl['address'].invalid"
           class="info-msg text-danger">
-                <small *ngIf="addFormControl['address'].errors && addFormControl['address'].errors?.['required']">This is the required field.</small>
+                <small *ngIf="addFormControl['address'].errors && addFormControl['address'].errors?.['required']">Address is required.</small>
             </span>
       </div>
     </div>
@@ -39,10 +39,10 @@
         <span
           *ngIf="submitted || addFormControl['phone'].touched || addFormControl['phone'].dirty && addFormControl['phone'].invalid"
           class="info-msg text-danger">
-                <small *ngIf="addFormControl['phone'].errors && addFormControl['phone'].errors?.['required']">This is the required field.</small>
+                <small *ngIf="addFormControl['phone'].errors && addFormControl['phone'].errors?.['required']">Phone Number is required.</small>
             </span>
       </div>
-    </div>
+    </div><pre></pre>
     <div class="col-md-4">
       <div class="form-group">
         <label for="email">Email</label><br>
@@ -54,7 +54,7 @@
         <span
           *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid"
           class="info-msg text-danger">
-                <small *ngIf="addFormControl['email'].errors && addFormControl['email'].errors?.['required']">This is the required field.</small>
+                <small *ngIf="addFormControl['email'].errors && addFormControl['email'].errors?.['required']">Email is required. </small>
             </span>
       </div>
     </div>

@@ -11,7 +11,7 @@
           <span
             *ngIf="submitted || addFormControl['username'].touched || addFormControl['username'].dirty && addFormControl['username'].invalid"
             class="info-msg text-danger">
-                <small *ngIf="addFormControl['username'].errors && addFormControl['username'].errors?.['required']">This is the required field.</small>
+                <small *ngIf="addFormControl['username'].errors && addFormControl['username'].errors?.['required']">UserName is required</small>
             </span>
         </div>
         <pre></pre>
@@ -24,7 +24,7 @@
           <span
             *ngIf="submitted || addFormControl['password'].touched || addFormControl['password'].dirty && addFormControl['password'].invalid"
             class="info-msg text-danger">
-                <small *ngIf="addFormControl['password'].errors && addFormControl['password'].errors?.['required']">This is the required field.</small>
+                <small *ngIf="addFormControl['password'].errors && addFormControl['password'].errors?.['required']">Password is required</small>
             </span>
         </div>
         <pre></pre>

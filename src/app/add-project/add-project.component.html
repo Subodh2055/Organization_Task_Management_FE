@@ -21,7 +21,7 @@
             *ngIf="submitted || addFormControl['projectName'].touched || addFormControl['projectName'].dirty && addFormControl['projectName'].invalid"
             class="info-msg text-danger">
                 <small
-                  *ngIf="addFormControl['projectName'].errors && addFormControl['projectName'].errors?.['required']">This is the required field.</small>
+                  *ngIf="addFormControl['projectName'].errors && addFormControl['projectName'].errors?.['required']">Project Name is required.</small>
             </span>
         </div>
       </div>
