@@ -1,12 +1,12 @@
 <div class="wrapper">
   <!-- Sidebar  -->
-  <nav id="sidebar">
-    <div class="sidebar-header">
+  <nav id="sidebar" class="">
+    <div class="sidebar-header ">
       <h3>Task Management</h3>
     </div>
 
-    <ul class="list-unstyled components">
-      <li class="active">
+    <ul class="list-unstyled components ">
+      <li >
         <a (click)="routeToAddOrganization()" class="cursor-pointer">Add Organization</a>
       </li>
 
@@ -20,17 +20,17 @@
         <a (click)="routeToLogin()">Sign In</a>
       </li>
       <li>
-        <a (click)="routeToRequestClarification()">Request Clarification</a>
+        <a>Request Clarification</a>
       </li>
       <li>
-        <a (click)="routeToClarificationTable()">Clarification Table</a>
+        <a >Clarification Table</a>
       </li>
     </ul>
 
   </nav>
 
   <!-- Page Content  -->
-  <div id="content">
+  <div id="content" class="su-back">
 
     <router-outlet></router-outlet>
 

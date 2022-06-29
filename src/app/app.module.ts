@@ -12,10 +12,10 @@ import {AddProjectComponent} from './add-project/add-project.component';
 import {SignupComponent} from './signup/signup.component';
 import {LoginComponent} from './login/login.component';
 import {RequestClarificationComponent} from './request-clarification/request-clarification.component';
-import {ProvideClarificaitionComponent} from './provide-clarificaition/provide-clarificaition.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSliderModule} from "@angular/material/slider";
+import { ClarificationTableComponent } from './clarification-table/clarification-table.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import {MatSliderModule} from "@angular/material/slider";
     SignupComponent,
     LoginComponent,
     RequestClarificationComponent,
-    ProvideClarificaitionComponent
+    ClarificationTableComponent
   ],
   imports: [
     BrowserModule,
@@ -39,8 +39,6 @@ import {MatSliderModule} from "@angular/material/slider";
     HttpClientModule,
     MatSliderModule,
     NbCardModule,
-
-
   ],
   providers: [],
   bootstrap: [AppComponent]

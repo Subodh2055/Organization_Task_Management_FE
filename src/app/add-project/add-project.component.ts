@@ -51,6 +51,7 @@ export class AddProjectComponent implements OnInit {
       this.projectService.addProject(this.project).subscribe(
         response => {
           console.log(response, 'response')
+          this.nextToSignUp();
         })
     }
   }
@@ -93,5 +94,10 @@ export class AddProjectComponent implements OnInit {
 
   get addFormControl(): { [key: string]: AbstractControl } {
     return this.addForm.controls;
+  }
+
+    nextToSignUp() {
+    this.route.navigate(['signUp'])
+
   }
 }

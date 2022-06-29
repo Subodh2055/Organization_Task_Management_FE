@@ -50,14 +50,24 @@ export class AddOrganizationComponent implements OnInit {
     )
   }
 
+  getOrganizationByEmail(){
+    this.addOrganizationServiceService.getOrganizationByEmail(this.addForm.get('email')?.value).subscribe(
+      response => {
+        const mail = response;
+        console.log(mail,'mail')
+
+      }
+    )
+  }
+
 
   private formMaker() {
     this.addForm = this.formBuilder.group({
-      organizationName: ['', Validators.required],
-      address: ['', Validators.required],
-      phone: ['', Validators.required],
-      email: ['', Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")],
-      website: [''],
+      organizationName: [undefined, Validators.required],
+      address: [undefined, Validators.required],
+      phone: [undefined, Validators.required],
+      email: [undefined, Validators.compose([Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])],
+      website: [undefined],
     })
 
   }
@@ -69,11 +79,17 @@ export class AddOrganizationComponent implements OnInit {
       this.addOrganizationServiceService.addOrganization(this.addForm.value).subscribe(
         response => {
           console.log(response, 'response')
+          this.nextToAddProject();
         })
     }
   }
 
   get addFormControl(): { [key: string]: AbstractControl } {
     return this.addForm.controls;
+  }
+
+  nextToAddProject() {
+    this.route.navigate(['add-project'])
+
   }
 }

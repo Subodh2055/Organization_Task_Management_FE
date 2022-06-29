@@ -33,4 +33,8 @@ export class AddOrganizationServiceService {
   public updateOrganization(userId: number, organization: Organization): Observable<Organization>{
     return this.http.put<Organization>(`${this.ApiServiceUrl}/api/organization/update/${userId}`, organization)
   }
+  public getOrganizationByEmail(email: string): Observable<any>{
+    return this.http.get(`${this.ApiServiceUrl}/api/users/findByEmail/${email}`)
+  }
 }
+
