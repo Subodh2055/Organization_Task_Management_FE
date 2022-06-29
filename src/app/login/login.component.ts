@@ -5,6 +5,7 @@ import {SignupService} from "../signup/signup.service";
 import {Login} from "./login";
 import {LoginService} from "./login.service";
 import {ObjectUtil} from "../ObjectUtil";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private formBuilder: FormBuilder,
     private signupService: SignupService,
+    private route: Router,
   ) {
   }
 
@@ -50,6 +52,7 @@ export class LoginComponent implements OnInit {
           console.log(response, 'response')
         })
     }
+    this.nextToRequestClarification();
 
   }
 
@@ -92,6 +95,9 @@ export class LoginComponent implements OnInit {
         console.log(error)
       }
     )
+  }
+  nextToRequestClarification(){
+    this.route.navigate(['request-clarification'])
   }
 
 }

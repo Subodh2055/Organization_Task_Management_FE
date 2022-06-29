@@ -2,10 +2,10 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AddOrganizationComponent} from "./add-organization/add-organization.component";
 import {AddProjectComponent} from "./add-project/add-project.component";
-import {SignUp} from "./signup/SignUp";
 import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
 import {RequestClarificationComponent} from "./request-clarification/request-clarification.component";
+import {ClarificationTableComponent} from "./clarification-table/clarification-table.component";
 
 const routes: Routes = [
   {
@@ -27,6 +27,10 @@ const routes: Routes = [
   {
     path: 'request-clarification',
     component: RequestClarificationComponent
+  },
+  {
+    path: 'clarification-Table',
+    component: ClarificationTableComponent
   },
 ];
 

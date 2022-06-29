@@ -1,51 +1,110 @@
-<!--<div class="container"  >-->
-<!--  <form [formGroup]="addForm">-->
-<!--    <div className="col-md-12 g-3">-->
-<!--      <div class="row">-->
+<form [formGroup]="addForm">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="subject">Subject </label>
+        <input class='form-control' id="subject"
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['subject']?.errors, 'is-valid': addFormControl['subject']?.valid }"
+               formControlName='subject'>
+        <span
+          *ngIf="submitted || addFormControl['subject'].touched || addFormControl['subject'].dirty && addFormControl['subject'].invalid"
+          class="info-msg text-danger">
+                <small
+                  *ngIf="addFormControl['subject'].errors && addFormControl['subject'].errors?.['required']">Subject is required.</small>
+            </span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="clarificationRequested">Clarification Request</label>
+        <input id="clarificationRequested"
+               class='form-control'
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['clarificationRequested']?.errors, 'is-valid': addFormControl['clarificationRequested']?.valid }"
+               formControlName='clarificationRequested'/>
+        <span
+          *ngIf="submitted || addFormControl['clarificationRequested'].touched || addFormControl['clarificationRequested'].dirty && addFormControl['clarificationRequested'].invalid"
+          class="info-msg text-danger">
+                <small *ngIf="addFormControl['clarificationRequested'].errors && addFormControl['clarificationRequested'].errors?.['required']">Clarification Request is required.</small>
+            </span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="module">Module</label><br>
+        <input id="module"
+               class='form-control'
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['module']?.errors, 'is-valid': addFormControl['module']?.valid }"
+               formControlName='module' ngModel/>
+        <span
+          *ngIf="submitted || addFormControl['module'].touched || addFormControl['module'].dirty && addFormControl['module'].invalid"
+          class="info-msg text-danger">
+                <small *ngIf="addFormControl['module'].errors && addFormControl['module'].errors?.['required']">Module is required.</small>
+            </span>
+      </div>
+    </div><pre></pre>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="requestedBy">Requested By</label><br>
+        <input id="requestedBy"
+               class='form-control'
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['requestedBy']?.errors, 'is-valid': addFormControl['requestedBy']?.valid }"
+               formControlName='requestedBy' ngModel/>
+        <span
+          *ngIf="submitted || addFormControl['requestedBy'].touched || addFormControl['requestedBy'].dirty && addFormControl['requestedBy'].invalid"
+          class="info-msg text-danger">
+                <small *ngIf="addFormControl['requestedBy'].errors && addFormControl['requestedBy'].errors?.['required']">Requested By is required. </small>
+            </span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <label for="requestedTo">Requested To</label>
+      <select class="form-control  form-control-tiny" formControlName="requestedTo" id="requestedTo">
+        <option [value]="null" selected hidden>User List</option>
+        <option *ngFor="let user of userData"
+                [ngValue]="user">
+          {{user.userName}}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="expectedDateForClosure">Expected Date For Closure</label><br>
+        <input id="expectedDateForClosure"
+               class='form-control'
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['expectedDateForClosure']?.errors, 'is-valid': addFormControl['expectedDateForClosure']?.valid }"
+               formControlName='expectedDateForClosure' ngModel/>
+        <span
+          *ngIf="submitted || addFormControl['expectedDateForClosure'].touched || addFormControl['expectedDateForClosure'].dirty && addFormControl['expectedDateForClosure'].invalid"
+          class="info-msg text-danger">
+                <small *ngIf="addFormControl['expectedDateForClosure'].errors && addFormControl['expectedDateForClosure'].errors?.['required']">Date is required. </small>
+            </span>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="emailReference">Email Reference</label><br>
+        <input id="emailReference"
+               class='form-control'
+               [ngClass]="{ 'is-invalid': submitted && addFormControl['emailReference']?.errors, 'is-valid': addFormControl['emailReference']?.valid }"
+               formControlName='emailReference' ngModel/>
+        <span
+          *ngIf="submitted || addFormControl['emailReference'].touched || addFormControl['emailReference'].dirty && addFormControl['emailReference'].invalid"
+          class="info-msg text-danger">
+                <small *ngIf="addFormControl['emailReference'].errors && addFormControl['emailReference'].errors?.['required']">Email is required. </small>
+            </span>
+      </div>
+    </div>
 
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" class="form-label">Subject</label>-->
-<!--          <input name="subject" class="form-control" placeholder='Enter Subject' value={subject} onChange={onChangeHandler}></input><hr></hr>-->
-<!--        </div>-->
-
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" className='form-label'>Clarification Requested</label>-->
-<!--          <input name='clarificationRequested' class="form-control" type="text" placeholder='Enter Your clarificationRequested' onChange={onChangeHandler} value={clarificationRequested} /><hr />-->
-<!--        </div>-->
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" className='form-label'>Module</label>-->
-<!--          <input name='module' class="form-control" type="text" placeholder='Enter module' onChange={onChangeHandler} value={module} /><hr></hr>-->
-
-<!--        </div>-->
-<!--      </div>-->
-
-<!--    </div>-->
-<!--    <div className="col-md 12 g-3">-->
-<!--      <div class="row">-->
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" className='form-label'>Requested To</label>-->
-<!--          {/* <input name='requestedTo' class="form-control" type="text" placeholder='RequestedTo' onChange={onChangeHandler} value={requestedTo} /><hr></hr> */}-->
-<!--          <select className="form-control" onChange={onChangeHandler} name="requestedTo" >-->
-<!--            {userList.map(usr => <option value={usr.id}>{usr.userName}</option>)}-->
-<!--          </select><hr></hr>-->
-<!--        </div>-->
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" className='form-label'>Expected Date For Closure</label>-->
-<!--          <input name='expectedDateForClosure' class="form-control" type="text" placeholder='yyyy-mm-dd' onChange={onChangeHandler} value={expectedDateForClosure} /><hr></hr>-->
-<!--        </div>-->
-<!--        <div class="col-md-4">-->
-<!--          <label htmlFor="#" className='form-label'>Email Reference</label>-->
-<!--          <input name='emailReference' class="form-control" type="text" placeholder='info@gmail.com' onChange={onChangeHandler} value={emailReference} /><hr></hr>-->
-<!--        </div>-->
-
-<!--      </div>-->
+    <div class="row">
+      <div class="col-md-12 d-flex justify-content-end">
+        <button nbButton Class="btn btn-secondary" (click)="addRequestClarification()">Add Clarification</button>
+      </div>
+    </div>
+  </div>
+</form>
 
 
-<!--    </div>-->
 
 
-<!--    <button onClick={addHandler}>Add Clarification</button>-->
 
-<!--  </form>-->
 
-<!--</div>-->
+
