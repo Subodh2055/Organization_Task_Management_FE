@@ -19,4 +19,7 @@ export class SignupService {
   public addUser(signUp: SignUp): Observable<SignUp>{
     return this.http.post<SignUp>(`${this.ApiServiceUrl}/api/auth/signup`, signUp)
   }
+  public getByUserName(userName: string): Observable<any>{
+    return this.http.get(`${this.ApiServiceUrl}/api/users/findByUserName/${userName}`)
+  }
 }
