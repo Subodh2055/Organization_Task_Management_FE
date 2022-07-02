@@ -16,6 +16,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSliderModule} from "@angular/material/slider";
 import { ClarificationTableComponent } from './clarification-table/clarification-table.component';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ClarificationTableComponent } from './clarification-table/clarification
     HttpClientModule,
     MatSliderModule,
     NbCardModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

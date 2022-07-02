@@ -44,15 +44,15 @@ export class LoginComponent implements OnInit {
 
   addLogin() {
     this.submitted = true
-    if (this.addForm.invalid) {
-
-    } else {
+    if(this.addForm.valid) {
       this.loginService.addLogin(this.addForm.value).subscribe(
         response => {
-          console.log(response, 'response')
-        })
+          if(response !== null) {
+            this.nextToRequestClarification();
+          }
+        });
     }
-    this.nextToRequestClarification();
+
 
   }
 
