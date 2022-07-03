@@ -15,8 +15,8 @@ import {RequestClarificationComponent} from './request-clarification/request-cla
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSliderModule} from "@angular/material/slider";
-import { ClarificationTableComponent } from './clarification-table/clarification-table.component';
 import {NgxPaginationModule} from "ngx-pagination";
+import { ClarificationListComponent } from './clarification-list/clarification-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,7 @@ import {NgxPaginationModule} from "ngx-pagination";
     SignupComponent,
     LoginComponent,
     RequestClarificationComponent,
-    ClarificationTableComponent
+    ClarificationListComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,7 @@ import {AddProjectComponent} from "./add-project/add-project.component";
 import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
 import {RequestClarificationComponent} from "./request-clarification/request-clarification.component";
-import {ClarificationTableComponent} from "./clarification-table/clarification-table.component";
+import {ClarificationListComponent} from "./clarification-list/clarification-list.component";
 
 const routes: Routes = [
   {
@@ -29,9 +29,9 @@ const routes: Routes = [
     component: RequestClarificationComponent
   },
   {
-    path: 'clarification-Table',
-    component: ClarificationTableComponent
-  },
+    path:'clarification-list',
+    component: ClarificationListComponent
+  }
 ];
 
 @NgModule({

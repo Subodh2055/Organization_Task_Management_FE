@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {SignUp} from "../signup/SignUp";
 import {HttpClient} from "@angular/common/http";
 import {Login} from "./login";
 import {environment} from "../../environments/environment";

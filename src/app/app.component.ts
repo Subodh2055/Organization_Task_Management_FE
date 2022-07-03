@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 })
 export class AppComponent {
   title = 'organization_task_management';
-
+  public isCollapsed = false;
   constructor(private route: Router,) {
 
   }
@@ -34,6 +34,6 @@ export class AppComponent {
   }
 
   routeToClarificationTable() {
-    this.route.navigate(['clarification-Table'])
+    this.route.navigate(['clarification-list'])
   }
 }

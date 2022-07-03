@@ -1,39 +1,38 @@
-<div class="wrapper hover_collapse">
+
+<div class="wrapper"  >
   <!-- Sidebar  -->
-  <nav id="sidebar" class="">
+  <div >
     <div class="sidebar-header ">
-      <h3>Task Management</h3>
+      <h3 [attr.aria-expanded]="!isCollapsed" (click)="collapse.toggle()">Task Management</h3>
     </div>
+    <nav #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" id="sidebar" class="side panel">
+      <ul class="list-unstyled components ">
+        <li >
+          <a (click)="routeToAddOrganization()" class="cursor-pointer">Add Organization</a>
+        </li>
 
-    <ul class="list-unstyled components ">
-      <li >
-        <a (click)="routeToAddOrganization()" class="cursor-pointer">Add Organization</a>
-      </li>
+        <li>
+          <a (click)="routeToAddProject()" class="cursor-pointer">Add Project</a>
+        </li>
+        <li>
+          <a (click)="routeToSignUp()">Sign Up</a>
+        </li>
+        <li>
+          <a (click)="routeToLogin()">Sign In</a>
+        </li>
+        <li>
+          <a >Request Clarification</a>
+        </li>
+        <li>
+          <a (click)="routeToClarificationTable()">Clarification Table</a>
+        </li>
+      </ul>
 
-      <li>
-        <a (click)="routeToAddProject()" class="cursor-pointer">Add Project</a>
-      </li>
-      <li>
-        <a (click)="routeToSignUp()">Sign Up</a>
-      </li>
-      <li>
-        <a (click)="routeToLogin()">Sign In</a>
-      </li>
-      <li>
-        <a (click)="routeToRequestClarification()">Request Clarification</a>
-      </li>
-      <li>
-        <a (click)="routeToClarificationTable()">Clarification Table</a>
-      </li>
-    </ul>
-
-  </nav>
-
+    </nav>
+  </div>
   <!-- Page Content  -->
   <div id="content" class="su-back">
-
     <router-outlet></router-outlet>
-
   </div>
 </div>
 
