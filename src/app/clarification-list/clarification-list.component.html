@@ -1,0 +1,85 @@
+<div class="col-md-12">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>S.No</th>
+        <th>Subject</th>
+        <th>Clarification Request</th>
+        <th>Module</th>
+        <th>Requested By</th>
+        <th>Requested To</th>
+        <th>Requested Date</th>
+        <th>Expected Date For Closure</th>
+        <th>Provide Clarification</th>
+        <th>Clarification Provided By</th>
+        <th>Clarified Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of clarificationData; let i = index;">
+        <td>{{i+1}}</td>
+        <td>{{data?.subject}}</td>
+        <td>{{data?.clarificationRequested}}</td>
+        <td>{{data?.module}}</td>
+        <td>{{data?.requestedBy}}</td>
+        <td>{{data?.requestedTo.userName}}</td>
+        <td>{{data?.requestedDate}}</td>
+        <td>{{data?.expectedDateForClosure}}</td>
+        <td>{{data?.provideClarification}}</td>
+        <td>{{data?.clarificationProvidedBy}}</td>
+        <td>{{data?.clarifiedDate}}</td>
+        <td *ngIf="data?.clarifiedDate === null">Pending</td>
+        <td *ngIf="data?.clarifiedDate !== null">closed</td>
+        <td>
+
+          <button class="btn btn-primary" (click)="open(template,data?.id)">Provide Clarification</button>
+
+          <ng-template #template let-c="close" let-d="dismiss">
+            <div class="modal-header d-flex justify-content-end">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="d('cross click')">
+                <span aria-hidden="true" >×</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <form [formGroup]="clarificationForm">
+                <div class="row">
+                  <input hidden formControlName="id">
+                  <input hidden formControlName="requestedDate">
+                  <input hidden formControlName="expectedDateForClosure">
+                  <input hidden formControlName="requestedTo">
+                  <input hidden formControlName="emailReference">
+                  <input hidden formControlName="clarificationRequested">
+                  <input hidden formControlName="clarificationProvidedBy">
+                  <input hidden formControlName="module">
+                  <input hidden formControlName="subject">
+                  <div class="col-md-12">
+                    <label for="provideClarification">Clarification Request</label>
+                    <input class="form-control" type="text" formControlName="provideClarification" id="provideClarification">
+                  </div>
+                  <div class="col-md-12 mt-2">
+                    <label for="clarifiedDate">Clarified Date</label>
+                    <input class="form-control" type="date" formControlName="clarifiedDate" id="clarifiedDate">
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" (click)="updateClarification(data?.id)" class="btn btn-default" >Save</button>
+            </div>
+          </ng-template>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>
+
+
+
+
