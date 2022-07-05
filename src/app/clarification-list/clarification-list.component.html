@@ -12,25 +12,25 @@
         <th>Requested Date</th>
         <th>Expected Date For Closure</th>
         <th>Provide Clarification</th>
-        <th>Clarification Provided By</th>
+<!--        <th>Clarification Provided By</th>-->
         <th>Clarified Date</th>
         <th>Status</th>
         <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let data of clarificationData; let i = index;">
+      <tr *ngFor="let data of clarificationData | paginate: {itemsPerPage: 5, currentPage: p}; let i = index;">
         <td>{{i+1}}</td>
         <td>{{data?.subject}}</td>
         <td>{{data?.clarificationRequested}}</td>
         <td>{{data?.module}}</td>
         <td>{{data?.requestedBy}}</td>
         <td>{{data?.requestedTo.userName}}</td>
-        <td>{{data?.requestedDate}}</td>
-        <td>{{data?.expectedDateForClosure}}</td>
+        <td>{{data?.requestedDate |  date:'medium'}}</td>
+        <td>{{data?.expectedDateForClosure |  date:'medium'}}</td>
         <td>{{data?.provideClarification}}</td>
-        <td>{{data?.clarificationProvidedBy}}</td>
-        <td>{{data?.clarifiedDate}}</td>
+<!--        <td>{{data?.clarificationProvidedBy}}</td>-->
+        <td>{{data?.clarifiedDate |  date:'medium'}}</td>
         <td *ngIf="data?.clarifiedDate === null">Pending</td>
         <td *ngIf="data?.clarifiedDate !== null">closed</td>
         <td>
@@ -45,7 +45,7 @@
             </div>
 
             <div class="modal-body">
-              <form [formGroup]="clarificationForm">
+              <form  [formGroup]="clarificationForm">
                 <div class="row">
                   <input hidden formControlName="id">
                   <input hidden formControlName="requestedDate">
@@ -75,8 +75,9 @@
         </td>
       </tr>
       </tbody>
-
     </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
   </div>
 </div>
 

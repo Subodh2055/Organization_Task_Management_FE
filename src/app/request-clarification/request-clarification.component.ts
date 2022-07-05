@@ -79,7 +79,7 @@ export class RequestClarificationComponent implements OnInit {
   }
 
   private nextToClarificationTable() {
-    this.route.navigate(['clarification-Table'])
+    this.route.navigate(['clarification-list'])
   }
 }
 

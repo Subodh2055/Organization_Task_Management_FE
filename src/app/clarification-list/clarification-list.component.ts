@@ -11,7 +11,7 @@ import {ObjectUtil} from "../ObjectUtil";
   styleUrls: ['./clarification-list.component.scss']
 })
 export class ClarificationListComponent implements OnInit {
-
+  p: number = 1
   clarificationData: any
   clarificationForm: FormGroup
   @Input() formValue: RequestClarification;
