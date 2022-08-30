@@ -1,38 +1,43 @@
-
-<div class="wrapper"  >
-  <!-- Sidebar  -->
-  <div >
-    <div class="sidebar-header ">
-      <h3 [attr.aria-expanded]="!isCollapsed" (click)="collapse.toggle()">Task Management</h3>
-    </div>
-    <nav #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" id="sidebar" class="side panel">
-      <ul class="list-unstyled components ">
-        <li >
-          <a (click)="routeToAddOrganization()" class="cursor-pointer">Add Organization</a>
+<div class="row">
+<nav class="navbar navbar-expand-lg" style="background-color: lightgreen; color: navy">
+<!--  <div class="container-fluid">-->
+    <a class="navbar-brand" href="#"> Organization Task Management</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+         <strong><a class="nav-link active" aria-current="page" href="#">Home</a></strong>
         </li>
-
-        <li>
-          <a (click)="routeToAddProject()" class="cursor-pointer">Add Project</a>
+        <li class="nav-item">
+          <strong><a class="nav-link" routerLink="/add-organization">Add Organization</a></strong>
         </li>
-        <li>
-          <a (click)="routeToSignUp()">Sign Up</a>
+        <li class="nav-item">
+          <strong><a class="nav-link" routerLink="/add-project">Add Project</a></strong>
         </li>
-        <li>
-          <a (click)="routeToLogin()">Sign In</a>
+        <li class="nav-item">
+          <strong><a class="nav-link" routerLink="/signUp">Register Client</a></strong>
         </li>
-        <li>
-          <a >Request Clarification</a>
+        <li class="nav-item">
+          <strong><a class="nav-link" routerLink="/signIn">Sign In</a></strong>
         </li>
-        <li>
-          <a (click)="routeToClarificationTable()">Clarification Table</a>
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" routerLink="/request-clarification">Request Clarification</a>-->
+<!--        </li>-->
+        <li class="nav-item">
+          <strong><a class="nav-link" routerLink="/clarification-list">Clarification List</a></strong>
         </li>
       </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+<!--  </div>-->
 
-    </nav>
-  </div>
-  <!-- Page Content  -->
-  <div id="content" class="su-back">
-    <router-outlet></router-outlet>
-  </div>
+</nav>
 </div>
+<!-- Page Content  -->
+<router-outlet></router-outlet>
 

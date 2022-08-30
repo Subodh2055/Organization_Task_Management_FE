@@ -17,6 +17,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgxPaginationModule} from "ngx-pagination";
 import { ClarificationListComponent } from './clarification-list/clarification-list.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ClarificationListComponent } from './clarification-list/clarification-l
     SignupComponent,
     LoginComponent,
     RequestClarificationComponent,
-    ClarificationListComponent
+    ClarificationListComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

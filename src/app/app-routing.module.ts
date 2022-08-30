@@ -6,8 +6,13 @@ import {SignupComponent} from "./signup/signup.component";
 import {LoginComponent} from "./login/login.component";
 import {RequestClarificationComponent} from "./request-clarification/request-clarification.component";
 import {ClarificationListComponent} from "./clarification-list/clarification-list.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent
+  },
   {
     path: 'add-organization',
     component: AddOrganizationComponent
