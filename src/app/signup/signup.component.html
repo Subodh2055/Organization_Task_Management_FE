@@ -1,70 +1,78 @@
-<form [formGroup]="addForm">
-  <div class="row">
-    <div class="col-md-4">
-      <label for="fullName">Full Name</label>
-      <input class='form-control'
-             id="fullName"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['fullName']?.errors, 'is-valid': addFormControl['fullName']?.valid }"
-             formControlName='fullName'/>
-      <span
-        *ngIf="submitted || addFormControl['fullName'].touched || addFormControl['fullName'].dirty && addFormControl['fullName'].invalid"
-        class="info-msg text-danger">
+<div class="form-box">
+  <form [formGroup]="addForm">
+    <div class="row col-md-12">
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label style="color: white; font-size: large" for="fullName">Full Name</label>
+          <input class='form-control'
+                 id="fullName"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['fullName']?.errors, 'is-valid': addFormControl['fullName']?.valid }"
+                 formControlName='fullName'/>
+          <span
+            *ngIf="submitted || addFormControl['fullName'].touched || addFormControl['fullName'].dirty && addFormControl['fullName'].invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['fullName'].errors && addFormControl['fullName'].errors?.['required']">Full Name is required.</small>
             </span>
-    </div>
-
-    <div class="col-md-4">
-      <label for="designation">Designation</label>
-      <input class="form-control"
-             id="designation"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['designation']?.errors, 'is-valid': addFormControl['designation']?.valid }"
-             formControlName='designation'/>
-      <span
-        *ngIf="submitted || addFormControl['designation'].touched || addFormControl['designation'].dirty && addFormControl['designation'].invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label style="color: white; font-size: large" for="designation">Designation</label>
+          <input class="form-control"
+                 id="designation"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['designation']?.errors, 'is-valid': addFormControl['designation']?.valid }"
+                 formControlName='designation'/>
+          <span
+            *ngIf="submitted || addFormControl['designation'].touched || addFormControl['designation'].dirty && addFormControl['designation'].invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['designation'].errors && addFormControl['designation'].errors?.['required']">Designation Name is required.</small>
             </span>
-    </div>
-    <div class="col-md-4">
-      <label for="email">Email</label>
-      <input (focusout)= "getOrganizationByEmail($event)" class="form-control"
-             id="email"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': addFormControl['email']?.valid }"
-             formControlName='email'/>
-      <span
-        *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="email" style="color: white; font-size: large">Email</label>
+          <input (focusout)="getOrganizationByEmail($event)" class="form-control"
+                 id="email"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': addFormControl['email']?.valid }"
+                 formControlName='email'/>
+          <span
+            *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['email'].errors && addFormControl['email'].errors?.['required']">Email is required.</small>
          <small *ngIf="alreadyUsed && addFormControl['email'].valid" class="info-msg text-danger">
         Already Registered
          </small>
             </span>
-
-    </div>
-    <div class="col-md-4">
-      <label for="mobile">Mobile</label>
-      <input class="form-control"
-             id="mobile" type="number"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['mobile']?.errors, 'is-valid': addFormControl['mobile']?.valid }"
-             formControlName='mobile'/>
-      <span
-        *ngIf="submitted || addFormControl['mobile'].touched || addFormControl['mobile'].dirty && addFormControl['mobile'].invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="mobile" style="color: white; font-size: large">Mobile</label>
+          <input class="form-control"
+                 id="mobile" type="number"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['mobile']?.errors, 'is-valid': addFormControl['mobile']?.valid }"
+                 formControlName='mobile'/>
+          <span
+            *ngIf="submitted || addFormControl['mobile'].touched || addFormControl['mobile'].dirty && addFormControl['mobile'].invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['mobile'].errors && addFormControl['mobile'].errors?.['required']">Mobile Number is required.</small>
             </span>
-    </div>
-    <div class="col-md-4">
-      <label for="userName">UserName</label>
-      <input class="form-control" id="userName"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['userName']?.errors, 'is-valid': addFormControl['userName']?.valid }"
-             formControlName='userName' (focusout) = "getByUserName($event)"/>
-      <span
-        *ngIf="submitted || addFormControl['userName'].touched || addFormControl['userName'].dirty && addFormControl['userName'].invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="userName" style="color: white; font-size: large">UserName</label>
+          <input class="form-control" id="userName"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['userName']?.errors, 'is-valid': addFormControl['userName']?.valid }"
+                 formControlName='userName' (focusout)="getByUserName($event)"/>
+          <span
+            *ngIf="submitted || addFormControl['userName'].touched || addFormControl['userName'].dirty && addFormControl['userName'].invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['userName'].errors && addFormControl['userName'].errors?.['required']">UserName is required.</small>
         <small *ngIf="alreadyUse && addFormControl['userName'].valid" class="info-msg text-danger">
@@ -72,51 +80,59 @@
          </small>
             </span>
 
-    </div>
-    <div class="col-md-4">
-      <label for="password">Password</label>
-      <input class="form-control" id="password"
-             formControlName='password'
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
-             type="password" />
-      <span
-        *ngIf="submitted || addFormControl['password']?.touched || addFormControl['password']?.dirty && addFormControl['password']?.invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="password" style="color: white; font-size: large">Password</label>
+          <input class="form-control" id="password"
+                 formControlName='password'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
+                 type="password"/>
+          <span
+            *ngIf="submitted || addFormControl['password']?.touched || addFormControl['password']?.dirty && addFormControl['password']?.invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['password']?.errors && addFormControl['password']?.errors?.['required']">Password is required.</small>
             </span>
-    </div>
-    <pre></pre>
-    <div class="col-md-4">
-      <label for="passwordConfirm">Confirm Password</label>
-      <input class="form-control"
-             formControlName='passwordConfirm'
-             id="passwordConfirm"
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['passwordConfirm']?.errors, 'is-valid': addFormControl['passwordConfirm']?.valid }"
-             type="password"/>
-      <span
-        *ngIf="submitted || addFormControl['passwordConfirm']?.touched || addFormControl['passwordConfirm']?.dirty && addFormControl['passwordConfirm']?.invalid"
-        class="info-msg text-danger">
+        </div>
+      </div>
+      <pre></pre>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="passwordConfirm" style="color: white; font-size: large">Confirm Password</label>
+          <input class="form-control"
+                 formControlName='passwordConfirm'
+                 id="passwordConfirm"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['passwordConfirm']?.errors, 'is-valid': addFormControl['passwordConfirm']?.valid }"
+                 type="password"/>
+          <span
+            *ngIf="submitted || addFormControl['passwordConfirm']?.touched || addFormControl['passwordConfirm']?.dirty && addFormControl['passwordConfirm']?.invalid"
+            class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['passwordConfirm']?.errors && addFormControl['passwordConfirm']?.errors?.['required']">Confirm Password is required.</small>
         <small *ngIf="passwordMismatch && addFormControl['passwordConfirm'].valid" class="info-msg text-danger">
           Password Doesn't Match
         </small>
             </span>
+        </div>
+      </div>
+      <div class="div col-md-6">
+        <div class="form-group">
+          <label for="organizationName" style="color: white; font-size: large">Organization Name</label>
+          <select class="form-control  form-control-tiny mt-2" formControlName="organizationName" id="organizationName">
+            <option value="" [disabled]="true">Organization Name</option>
+            <option *ngFor="let org of organizationData"
+                    [ngValue]="org">
+              {{org.organizationName}}
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4">
-      <label for="organizationName">Organization Name</label>
-      <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
-        <option value="" [disabled]="true">Organization Name</option>
-        <option *ngFor="let org of organizationData"
-                [ngValue]="org">
-          {{org.organizationName}}
-      </select>
+    <div class="row  d-flex justify-content-center">
+      <div class="col-md-4">
+        <button nbButton Class="btn btn-warning" (click)="addUser()">Register User</button>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12 d-flex justify-content-end">
-      <button nbButton Class="btn btn-warning" (click)="addUser()">Register User</button>
-    </div>
-  </div>
-</form>
+  </form>
+</div>
