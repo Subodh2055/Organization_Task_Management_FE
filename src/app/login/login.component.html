@@ -35,7 +35,6 @@
 
   <button nbButton Class="btn btn-warning" (click)="addLogin()">Sign In</button>
 </form>-->
-
 <div class="form-box">
   <div class="header-text" style="color: white">
     Login Form
@@ -43,37 +42,34 @@
   <form [formGroup]="addForm">
     <div class="row">
       <div class="col-md-12">
-          <div class="form-group">
-            <label className='form-label' style="color: white; font-size: large">User Name</label><br>
-            <input required type="text"
-                   class='form-control'
-                   [ngClass]="{ 'is-invalid': submitted && addFormControl['username']?.errors, 'is-valid': addFormControl['username']?.valid }"
-                   formControlName='username' ngModel><br>
-            <span
-              *ngIf="submitted || addFormControl['username'].touched || addFormControl['username'].dirty && addFormControl['username'].invalid"
-              class="info-msg text-danger">
+        <div class="form-group">
+          <label className='form-label' style="color: white; font-size: large">User Name</label><br>
+          <input required type="text"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['username']?.errors, 'is-valid': addFormControl['username']?.valid }"
+                 formControlName='username' ngModel><br>
+          <span
+            *ngIf="submitted || addFormControl['username'].touched || addFormControl['username'].dirty && addFormControl['username'].invalid"
+            class="info-msg text-danger">
                 <small *ngIf="addFormControl['username'].errors && addFormControl['username'].errors?.['required']">UserName is required</small>
             </span>
-          </div>
-          <pre></pre>
-          <div class="form-group">
-            <label className='form-label' style="color: white; font-size: large" >Password</label><br>
-            <input required type="password"
-                   class='form-control'
-                   [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
-                   formControlName='password' ngModel/><br>
-            <span
-              *ngIf="submitted || addFormControl['password'].touched || addFormControl['password'].dirty && addFormControl['password'].invalid"
-              class="info-msg text-danger">
+        </div>
+        <pre></pre>
+        <div class="form-group">
+          <label className='form-label' style="color: white; font-size: large">Password</label><br>
+          <input required type="password"
+                 class='form-control'
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
+                 formControlName='password' ngModel/><br>
+          <span
+            *ngIf="submitted || addFormControl['password'].touched || addFormControl['password'].dirty && addFormControl['password'].invalid"
+            class="info-msg text-danger">
                 <small *ngIf="addFormControl['password'].errors && addFormControl['password'].errors?.['required']">Password is required</small>
             </span>
-          </div>
-          <pre></pre>
         </div>
-
+        <pre></pre>
       </div>
-
-
+    </div>
     <button nbButton Class="btn btn-warning" (click)="addLogin()">Sign In</button>
   </form>
 </div>
