@@ -1,33 +1,28 @@
-<form [formGroup]="addForm">
-  <div class="row">
+<div class="form-box">
+  <form [formGroup]="addForm">
     <div class="col-md-12">
-      <div class="col-md-8">
-        <div class="col-md-6">
-          <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
-            <option [value]="null" selected hidden>Organization Name</option>
-            <option *ngFor="let org of organizationData"
-                    [ngValue]="org">
-              {{org.organizationName}}
-          </select>
-          <pre></pre>
-          <label for="projectName">Project Name</label>
-          <input type="text"
-                 id="projectName"
-                 class='form-control'
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['projectName']?.errors, 'is-valid': addFormControl['projectName']?.valid }"
-                 formControlName='projectName'
-                 placeholder='Enter ProjectName' ngModel/>
-          <span
-            *ngIf="submitted || addFormControl['projectName'].touched || addFormControl['projectName'].dirty && addFormControl['projectName'].invalid"
-            class="info-msg text-danger">
+      <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
+        <option [value]="null" selected hidden>Organization Name</option>
+        <option *ngFor="let org of organizationData"
+                [ngValue]="org">
+          {{org.organizationName}}
+      </select>
+    </div>
+    <div class="col-md-12 mt-3">
+      <label class="form-label" style="color: white; font-size: large">Project Name</label>
+      <input type="text"
+             id="projectName"
+             class='form-control'
+             [ngClass]="{ 'is-invalid': submitted && addFormControl['projectName']?.errors, 'is-valid': addFormControl['projectName']?.valid }"
+             formControlName='projectName'
+             placeholder='Enter ProjectName' ngModel/>
+      <span
+        *ngIf="submitted || addFormControl['projectName'].touched || addFormControl['projectName'].dirty && addFormControl['projectName'].invalid"
+        class="info-msg text-danger">
                 <small
                   *ngIf="addFormControl['projectName'].errors && addFormControl['projectName'].errors?.['required']">Project Name is required.</small>
             </span>
-        </div>
-      </div>
-      <pre></pre>
-      <button nbButton Class="btn btn-warning" (click)="addProject()">Add Organization</button>
     </div>
-  </div>
-</form>
-
+    <button nbButton Class="btn btn-warning" (click)="addProject()">Add Organization</button>
+  </form>
+</div>
