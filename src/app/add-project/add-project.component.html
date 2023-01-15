@@ -24,5 +24,20 @@
             </span>
     </div>
     <button nbButton Class="btn btn-warning" (click)="addProject()">Add Organization</button>
+    <a (click)="open(deleteOption)" data-toggle="tooltip" data-placement="top" title="DELETE"
+       style="margin-left:10px">
+      <i class="fas fa-trash" style="color:red;"></i>
+    </a>
+    <ng-template #deleteOption let-c="close" let-d="dismiss">
+      <div class="modal-header sb-bg-dark" style="display:block">
+        <h4 class="modal-title pull-left text-white text-center" style="font-size: medium">
+          Are you sure you want to delete ?
+        </h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteApprovalLimit(allList.id)">Yes</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="onClose()">No</button>
+      </div>
+    </ng-template>
   </form>
 </div>

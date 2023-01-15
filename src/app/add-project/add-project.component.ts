@@ -6,6 +6,10 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {ObjectUtil} from "../ObjectUtil";
 import {Router} from "@angular/router";
 import {AddOrganizationServiceService} from "../add-organization/add-organization-service.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ModalResponse} from "../ModalResponse";
+import {Alert, AlertType} from "../Alert";
+import {ToastService} from "../ToastService";
 
 @Component({
   selector: 'app-add-project',
@@ -28,6 +32,8 @@ export class AddProjectComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: Router,
     private addOrganizationServiceService: AddOrganizationServiceService,
+    private modalService: NgbModal,
+    private toastService: ToastService,
   ) {
   }
 
@@ -99,5 +105,19 @@ export class AddProjectComponent implements OnInit {
     nextToSignUp() {
     this.route.navigate(['signUp'])
 
+  }
+  open(deleteOption: any) {
+    this.modalService.open(deleteOption);
+
+  }
+  onClose() {
+    this.modalService.dismissAll(ModalResponse.CANCEL);
+  }
+  deleteApprovalLimit(id: any) {
+    this.addOrganizationServiceService.deleteApprovalLimitById(id).subscribe((res: any) => {
+      this.toastService.show(new Alert(AlertType.SUCCESS, 'Approval Limit Deleted Successfully'));
+      this.modalService.dismissAll();
+      ApprovalLimitComponent.loadData(this);
+    });
   }
 }
