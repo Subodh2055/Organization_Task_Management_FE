@@ -1,0 +1,79 @@
+<h4 class="mb-3">New Clarification Request</h4>
+
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="projectId" class="form-label">Project</label>
+          <select id="projectId" class="form-select" formControlName="projectId"
+                  [class.is-invalid]="invalid('projectId')">
+            <option [ngValue]="null" disabled>Select a project</option>
+            @for (project of projects(); track project.id) {
+              <option [ngValue]="project.id">{{ project.name }} ({{ project.organization.name }})</option>
+            }
+          </select>
+          <div class="invalid-feedback">Project is required.</div>
+          @if (projects().length === 0) {
+            <div class="form-text">There are no projects yet. An admin needs to add one.</div>
+          }
+        </div>
+        <div class="col-md-6">
+          <label for="requestedToId" class="form-label">Ask ({{ counterpart() }})</label>
+          <select id="requestedToId" class="form-select" formControlName="requestedToId" [class.is-invalid]="invalid('requestedToId')">
+            <option [ngValue]="null" disabled>
+              {{ auth.role() === 'STAFF' && !form.controls.projectId.value ? 'Choose a project first' : 'Select a ' + counterpart() }}
+            </option>
+            @for (person of people(); track person.id) {
+              <option [ngValue]="person.id">
+                {{ person.fullName }} ({{ person.userName }}){{ person.organizationName ? ' - ' + person.organizationName : '' }}
+              </option>
+            }
+          </select>
+          <div class="invalid-feedback">Choose who to ask.</div>
+          @if (form.controls.projectId.value && people().length === 0) {
+            <div class="form-text">There is no {{ counterpart() }} to ask for this project.</div>
+          }
+        </div>
+        <div class="col-12">
+          <label for="subject" class="form-label">Subject</label>
+          <input id="subject" class="form-control" formControlName="subject" [class.is-invalid]="invalid('subject')">
+          <div class="invalid-feedback">Subject is required.</div>
+        </div>
+        <div class="col-12">
+          <label for="description" class="form-label">Question</label>
+          <textarea id="description" class="form-control" rows="5" formControlName="description"
+                    [class.is-invalid]="invalid('description')"></textarea>
+          <div class="invalid-feedback">Describe what needs clarifying.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="expectedClosureDate" class="form-label">Expected Closure Date <span class="text-muted">(optional)</span></label>
+          <input id="expectedClosureDate" type="date" class="form-control" [min]="today" formControlName="expectedClosureDate">
+        </div>
+        <div class="col-md-6">
+          <label for="emailReference" class="form-label">Email Reference <span class="text-muted">(optional)</span></label>
+          <input id="emailReference" type="email" class="form-control" formControlName="emailReference"
+                 [class.is-invalid]="invalid('emailReference')">
+          <div class="invalid-feedback">Enter a valid email.</div>
+        </div>
+        <div class="col-12">
+          <label for="files" class="form-label">Attachments <span class="text-muted">(optional, max 10 MB each)</span></label>
+          <input #fileInput id="files" type="file" class="form-control" multiple (change)="addFiles(fileInput)">
+          @if (files().length) {
+            <ul class="list-group mt-2">
+              @for (file of files(); track $index) {
+                <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                  <span class="text-break">{{ file.name }} <span class="text-muted small">({{ file.size | fileSize }})</span></span>
+                  <button type="button" class="btn btn-sm btn-link text-danger" (click)="removeFile($index)">Remove</button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ saving() ? 'Sending...' : 'Send Request' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

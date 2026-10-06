@@ -1,0 +1,24 @@
+.portal {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 66px);
+  background: #f5f6f8;
+
+  > .row {
+    flex: 1;
+  }
+}
+
+.portal-sidebar {
+  background: #fff;
+  border-right: 1px solid #e3e5e8;
+}
+
+.portal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.nav-link {
+  color: #333;
+}

@@ -1,0 +1,34 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1>Organization Task Management</h1>
+    <p class="lead">
+      Staff and customers ask each other for clarifications on projects, discuss them, share files,
+      and see at a glance what is waiting for an answer.
+    </p>
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      @if (auth.user()) {
+        <a class="btn btn-warning btn-lg" [routerLink]="auth.homeUrl()">Go to my portal</a>
+      } @else {
+        <a class="btn btn-warning btn-lg" routerLink="/login">Sign in</a>
+        <a class="btn btn-outline-light btn-lg" routerLink="/register">Create a customer account</a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <h5>Ask about a project</h5>
+      <p class="text-muted">Every clarification belongs to a project, with a due date and a clear owner.</p>
+    </div>
+    <div class="col-md-4">
+      <h5>Discuss and attach files</h5>
+      <p class="text-muted">Comment back and forth and share documents until the question is answered.</p>
+    </div>
+    <div class="col-md-4">
+      <h5>Get notified</h5>
+      <p class="text-muted">Email when someone asks you something, answers you, or comments.</p>
+    </div>
+  </div>
+</section>

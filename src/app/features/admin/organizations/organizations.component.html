@@ -1,0 +1,65 @@
+<h4 class="mb-3">Organizations</h4>
+
+<div class="card mb-4">
+  <div class="card-header">Add Organization</div>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="create()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="name" class="form-label">Organization Name</label>
+          <input id="name" class="form-control" formControlName="name" [class.is-invalid]="invalid('name')">
+          <div class="invalid-feedback">Organization Name is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="address" class="form-label">Address</label>
+          <input id="address" class="form-control" formControlName="address" [class.is-invalid]="invalid('address')">
+          <div class="invalid-feedback">Address is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="phone" class="form-label">Phone</label>
+          <input id="phone" type="tel" class="form-control" formControlName="phone" [class.is-invalid]="invalid('phone')">
+          <div class="invalid-feedback">Phone is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" type="email" class="form-control" formControlName="email" [class.is-invalid]="invalid('email')">
+          <div class="invalid-feedback">A valid email is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="website" class="form-label">Website <span class="text-muted">(optional)</span></label>
+          <input id="website" class="form-control" formControlName="website">
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ saving() ? 'Adding...' : 'Add Organization' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-striped mb-0">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Website</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (organization of organizations(); track organization.id) {
+        <tr>
+          <td>{{ organization.name }}</td>
+          <td>{{ organization.address }}</td>
+          <td>{{ organization.phone }}</td>
+          <td>{{ organization.email }}</td>
+          <td>{{ organization.website }}</td>
+        </tr>
+      } @empty {
+        <tr><td colspan="5" class="text-muted text-center">No organizations yet.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

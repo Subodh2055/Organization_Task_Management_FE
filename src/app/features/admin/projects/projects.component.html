@@ -1,0 +1,67 @@
+<h4 class="mb-3">Projects</h4>
+
+<div class="card mb-4">
+  <div class="card-header">Add Project</div>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="create()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="organizationId" class="form-label">Organization</label>
+          <select id="organizationId" class="form-select" formControlName="organizationId" [class.is-invalid]="invalid('organizationId')">
+            <option [ngValue]="null" disabled>Select an organization</option>
+            @for (organization of organizations(); track organization.id) {
+              <option [ngValue]="organization.id">{{ organization.name }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">Organization is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="name" class="form-label">Project Name</label>
+          <input id="name" class="form-control" formControlName="name" [class.is-invalid]="invalid('name')">
+          <div class="invalid-feedback">Project Name is required.</div>
+        </div>
+        <div class="col-12">
+          <label for="description" class="form-label">Description <span class="text-muted">(optional)</span></label>
+          <textarea id="description" class="form-control" rows="2" formControlName="description"></textarea>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ saving() ? 'Adding...' : 'Add Project' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="d-flex align-items-center gap-2 mb-2">
+  <label for="organizationFilter" class="text-muted">Organization:</label>
+  <select id="organizationFilter" class="form-select form-select-sm w-auto"
+          [ngModel]="organizationFilter()" (ngModelChange)="filterBy($event)">
+    <option [ngValue]="null">All</option>
+    @for (organization of organizations(); track organization.id) {
+      <option [ngValue]="organization.id">{{ organization.name }}</option>
+    }
+  </select>
+</div>
+
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-striped mb-0">
+    <thead>
+    <tr>
+      <th>Project</th>
+      <th>Organization</th>
+      <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (project of projects(); track project.id) {
+        <tr>
+          <td>{{ project.name }}</td>
+          <td>{{ project.organization.name }}</td>
+          <td class="text-muted">{{ project.description }}</td>
+        </tr>
+      } @empty {
+        <tr><td colspan="3" class="text-muted text-center">No projects yet.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

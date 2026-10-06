@@ -1,0 +1,64 @@
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <h4 class="mb-0">{{ title() }}</h4>
+  @if (auth.role() !== 'ADMIN') {
+    <a class="btn btn-primary btn-sm" [routerLink]="auth.homeUrl() + '/new-request'">New Request</a>
+  }
+</div>
+
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+  <input type="search" class="form-control form-control-sm search-box" placeholder="Search subject, question or answer"
+         aria-label="Search clarifications" (input)="onSearch($any($event.target).value)">
+  <select class="form-select form-select-sm w-auto" aria-label="Filter by status"
+          [ngModel]="status()" (ngModelChange)="setStatus($event)">
+    <option [ngValue]="null">All statuses</option>
+    <option ngValue="PENDING">Pending</option>
+    <option ngValue="CLOSED">Closed</option>
+  </select>
+  <select class="form-select form-select-sm w-auto" aria-label="Filter by project"
+          [ngModel]="projectId()" (ngModelChange)="setProject($event)">
+    <option [ngValue]="null">All projects</option>
+    @for (project of projects(); track project.id) {
+      <option [ngValue]="project.id">{{ project.name }} ({{ project.organization.name }})</option>
+    }
+  </select>
+  <button class="btn btn-outline-secondary btn-sm" type="button" (click)="load()">Refresh</button>
+  <span class="text-muted small ms-auto">{{ total() }} clarification(s)</span>
+</div>
+
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-hover align-middle mb-0">
+    <thead>
+    <tr>
+      <th>Subject</th>
+      <th>Project</th>
+      <th>Asked by</th>
+      <th>Asked to</th>
+      <th>Raised</th>
+      <th>Due</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track item.id) {
+        <tr class="row-link" (click)="open(item)">
+          <td>
+            <a [routerLink]="[auth.homeUrl(), 'clarifications', item.id]" (click)="$event.stopPropagation()">{{ item.subject }}</a>
+          </td>
+          <td>{{ item.project.name }}</td>
+          <td>{{ item.requestedBy.fullName }}</td>
+          <td>{{ item.requestedTo.fullName }}</td>
+          <td>{{ item.createdAt | date: 'mediumDate' }}</td>
+          <td>{{ item.expectedClosureDate | date: 'mediumDate' }}</td>
+          <td><app-status-badge [status]="item.status" /></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="text-muted text-center py-4">{{ loading() ? 'Loading...' : emptyText() }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (total() > pageSize) {
+  <ngb-pagination class="d-flex justify-content-center mt-3" [collectionSize]="total()" [pageSize]="pageSize"
+                  [page]="page()" (pageChange)="onPage($event)" [maxSize]="5" [boundaryLinks]="true" />
+}

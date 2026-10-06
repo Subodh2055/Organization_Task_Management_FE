@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg app-navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Organization Task Management</a>
+    <button class="navbar-toggler" type="button" (click)="collapsed.set(!collapsed())"
+            aria-controls="mainNavbar" [attr.aria-expanded]="!collapsed()" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar" [ngbCollapse]="collapsed()">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        </li>
+        @if (auth.user(); as user) {
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="auth.homeUrl()" routerLinkActive="active">My Portal</a>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login" routerLinkActive="active">Sign In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/register" routerLinkActive="active">Register</a>
+          </li>
+        }
+      </ul>
+      @if (auth.user(); as user) {
+        <div class="d-flex align-items-center gap-3">
+          <a class="text-reset text-decoration-none" [routerLink]="auth.homeUrl() + '/account'">
+            {{ user.fullName }}
+            <span class="badge text-bg-dark ms-1">{{ user.role }}</span>
+          </a>
+          <button class="btn btn-outline-dark btn-sm" type="button" (click)="logout()">Logout</button>
+        </div>
+      }
+    </div>
+  </div>
+</nav>

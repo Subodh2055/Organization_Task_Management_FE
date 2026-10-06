@@ -1,0 +1,64 @@
+<div class="auth-page auth-page--register">
+  <div class="auth-card auth-card--wide">
+    <h1>Create a customer account</h1>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="fullName" class="form-label">Full Name</label>
+          <input id="fullName" class="form-control" formControlName="fullName" autocomplete="name"
+                 [class.is-invalid]="invalid('fullName')">
+          <div class="invalid-feedback">Full Name is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="designation" class="form-label">Designation</label>
+          <input id="designation" class="form-control" formControlName="designation" [class.is-invalid]="invalid('designation')">
+          <div class="invalid-feedback">Designation is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="organizationId" class="form-label">Organization</label>
+          <select id="organizationId" class="form-select" formControlName="organizationId" [class.is-invalid]="invalid('organizationId')">
+            <option [ngValue]="null" disabled>Select your organization</option>
+            @for (organization of organizations(); track organization.id) {
+              <option [ngValue]="organization.id">{{ organization.name }}</option>
+            }
+          </select>
+          <div class="invalid-feedback">Organization is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input id="email" type="email" class="form-control" formControlName="email" autocomplete="email" (blur)="checkEmail()"
+                 [class.is-invalid]="invalid('email') || emailTaken()">
+          <div class="invalid-feedback">{{ emailTaken() ? 'This email is already registered.' : 'A valid email is required.' }}</div>
+        </div>
+        <div class="col-md-6">
+          <label for="mobile" class="form-label">Mobile</label>
+          <input id="mobile" type="tel" class="form-control" formControlName="mobile" autocomplete="tel"
+                 [class.is-invalid]="invalid('mobile')">
+          <div class="invalid-feedback">A valid mobile number is required (7 to 20 digits).</div>
+        </div>
+        <div class="col-md-6">
+          <label for="userName" class="form-label">Username</label>
+          <input id="userName" class="form-control" formControlName="userName" autocomplete="username" (blur)="checkUserName()"
+                 (input)="userNameTaken.set(false)" [class.is-invalid]="invalid('userName') || userNameTaken()">
+          <div class="invalid-feedback">{{ userNameTaken() ? 'This username is already taken.' : 'Username must be 3 to 50 characters.' }}</div>
+        </div>
+        <div class="col-md-6">
+          <label for="password" class="form-label">Password</label>
+          <input id="password" type="password" class="form-control" formControlName="password" autocomplete="new-password"
+                 [class.is-invalid]="invalid('password')">
+          <div class="invalid-feedback">At least 8 characters.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input id="confirmPassword" type="password" class="form-control" formControlName="confirmPassword" autocomplete="new-password"
+                 [class.is-invalid]="invalid('confirmPassword') || passwordMismatch">
+          <div class="invalid-feedback">{{ passwordMismatch ? "Passwords don't match." : 'Please confirm the password.' }}</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-warning w-100 mt-4" [disabled]="saving()">
+        {{ saving() ? 'Creating account...' : 'Create Customer Account' }}
+      </button>
+    </form>
+    <p class="mt-3 mb-0">Already have an account? <a routerLink="/login">Sign in</a></p>
+  </div>
+</div>

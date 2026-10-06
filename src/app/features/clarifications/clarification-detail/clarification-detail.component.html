@@ -1,0 +1,141 @@
+<a class="small text-decoration-none" [routerLink]="backLink().url">&larr; {{ backLink().label }}</a>
+
+@if (notFound(); as message) {
+  <div class="alert alert-warning mt-3">{{ message }}</div>
+} @else if (detail(); as detail) {
+  @let c = detail.clarification;
+
+  <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mb-3">
+    <h4 class="mb-0">{{ c.subject }}</h4>
+    <app-status-badge [status]="c.status" />
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <!-- Question -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <strong>{{ c.requestedBy.fullName }}</strong> asked <strong>{{ c.requestedTo.fullName }}</strong>
+          <span class="text-muted ms-1">&middot; {{ c.createdAt | date: 'medium' }}</span>
+        </div>
+        <div class="card-body preserve-lines">{{ c.description }}</div>
+      </div>
+
+      <!-- Answer -->
+      <div class="card mb-4" [class.border-success]="c.status === 'CLOSED'">
+        <div class="card-header">Answer</div>
+        <div class="card-body">
+          @if (c.status === 'CLOSED') {
+            <div class="preserve-lines">{{ c.answer }}</div>
+            <div class="small text-muted mt-2">{{ c.answeredBy?.fullName }} &middot; {{ c.answeredAt | date: 'medium' }}</div>
+          } @else if (detail.canAnswer) {
+            <form [formGroup]="answerForm" (ngSubmit)="answer()" novalidate>
+              <label for="answer" class="form-label">Your answer closes this clarification.</label>
+              <textarea id="answer" class="form-control" rows="4" formControlName="answer"
+                        [class.is-invalid]="answerForm.controls.answer.touched && answerForm.controls.answer.invalid"></textarea>
+              <div class="invalid-feedback">Answer is required.</div>
+              <div class="d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-success" [disabled]="answering()">
+                  {{ answering() ? 'Saving...' : 'Submit Answer' }}
+                </button>
+              </div>
+            </form>
+          } @else {
+            <span class="text-muted">Waiting for {{ c.requestedTo.fullName }} to answer.</span>
+          }
+        </div>
+      </div>
+
+      <!-- Discussion -->
+      <div class="card">
+        <div class="card-header">Discussion ({{ detail.comments.length }})</div>
+        <ul class="list-group list-group-flush">
+          @for (comment of detail.comments; track comment.id) {
+            <li class="list-group-item">
+              <div class="small text-muted">
+                <strong class="text-body">{{ comment.author.fullName }}</strong>
+                ({{ comment.author.role }}) &middot; {{ comment.createdAt | date: 'medium' }}
+              </div>
+              <div class="preserve-lines mt-1">{{ comment.body }}</div>
+            </li>
+          } @empty {
+            <li class="list-group-item text-muted">No comments yet.</li>
+          }
+        </ul>
+        @if (detail.canParticipate) {
+          <div class="card-body border-top">
+            <form [formGroup]="commentForm" (ngSubmit)="comment()" novalidate>
+              <label for="comment" class="visually-hidden">Add a comment</label>
+              <textarea id="comment" class="form-control" rows="2" placeholder="Add a comment" formControlName="body"></textarea>
+              <div class="d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-primary btn-sm" [disabled]="commenting() || commentForm.invalid">
+                  {{ commenting() ? 'Posting...' : 'Comment' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <!-- Details -->
+      <div class="card mb-4">
+        <div class="card-header">Details</div>
+        <div class="card-body">
+          <dl class="row mb-0 small">
+            <dt class="col-5">Project</dt>
+            <dd class="col-7">{{ c.project.name }}</dd>
+            <dt class="col-5">Organization</dt>
+            <dd class="col-7">{{ c.project.organization.name }}</dd>
+            <dt class="col-5">Asked by</dt>
+            <dd class="col-7">{{ c.requestedBy.fullName }} ({{ c.requestedBy.role }})</dd>
+            <dt class="col-5">Asked to</dt>
+            <dd class="col-7">{{ c.requestedTo.fullName }} ({{ c.requestedTo.role }})</dd>
+            <dt class="col-5">Raised</dt>
+            <dd class="col-7">{{ c.createdAt | date: 'medium' }}</dd>
+            <dt class="col-5">Due</dt>
+            <dd class="col-7">{{ (c.expectedClosureDate | date: 'mediumDate') ?? '-' }}</dd>
+            <dt class="col-5">Email reference</dt>
+            <dd class="col-7 text-break">{{ c.emailReference ?? '-' }}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Attachments -->
+      <div class="card">
+        <div class="card-header">Attachments ({{ detail.attachments.length }})</div>
+        <ul class="list-group list-group-flush">
+          @for (attachment of detail.attachments; track attachment.id) {
+            <li class="list-group-item d-flex align-items-start gap-2">
+              <div class="flex-grow-1 text-break">
+                <button type="button" class="btn btn-link p-0 text-start" (click)="download(attachment)">{{ attachment.fileName }}</button>
+                <div class="small text-muted">
+                  {{ attachment.size | fileSize }} &middot; {{ attachment.uploadedBy.fullName }} &middot; {{ attachment.createdAt | date: 'short' }}
+                </div>
+              </div>
+              @if (canDelete(attachment)) {
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove(attachment)"
+                        [attr.aria-label]="'Delete ' + attachment.fileName">Delete</button>
+              }
+            </li>
+          } @empty {
+            <li class="list-group-item text-muted">No files attached.</li>
+          }
+        </ul>
+        @if (detail.canParticipate) {
+          <div class="card-body border-top">
+            <label for="file" class="form-label small mb-1">Attach a file (max 10 MB)</label>
+            <input #fileInput id="file" type="file" class="form-control form-control-sm" [disabled]="uploading()"
+                   (change)="upload(fileInput)">
+            @if (uploading()) {
+              <div class="small text-muted mt-1">Uploading...</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="text-muted mt-3">Loading...</div>
+}

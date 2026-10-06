@@ -1,0 +1,136 @@
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">Users</h4>
+  <button class="btn btn-primary" type="button" (click)="showForm.set(!showForm())">
+    {{ showForm() ? 'Close' : 'Create User' }}
+  </button>
+</div>
+
+@if (showForm()) {
+  <div class="card mb-4">
+    <div class="card-header">Create User</div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="create()" novalidate>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label for="role" class="form-label">Role</label>
+            <select id="role" class="form-select" formControlName="role">
+              @for (role of roles; track role) {
+                <option [ngValue]="role">{{ role }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input id="fullName" class="form-control" formControlName="fullName" [class.is-invalid]="invalid('fullName')">
+            <div class="invalid-feedback">Full Name is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="designation" class="form-label">Designation</label>
+            <input id="designation" class="form-control" formControlName="designation" [class.is-invalid]="invalid('designation')">
+            <div class="invalid-feedback">Designation is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="organizationId" class="form-label">
+              Organization
+              @if (form.controls.role.value !== 'CUSTOMER') { <span class="text-muted">(optional)</span> }
+            </label>
+            <select id="organizationId" class="form-select" formControlName="organizationId" [class.is-invalid]="organizationMissing">
+              <option [ngValue]="null">None</option>
+              @for (organization of organizations(); track organization.id) {
+                <option [ngValue]="organization.id">{{ organization.name }}</option>
+              }
+            </select>
+            <div class="invalid-feedback">Customers must belong to an organization.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="email" class="form-control" formControlName="email" [class.is-invalid]="invalid('email')">
+            <div class="invalid-feedback">A valid email is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="mobile" class="form-label">Mobile</label>
+            <input id="mobile" type="tel" class="form-control" formControlName="mobile" [class.is-invalid]="invalid('mobile')">
+            <div class="invalid-feedback">A valid mobile number is required.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="userName" class="form-label">Username</label>
+            <input id="userName" class="form-control" formControlName="userName" autocomplete="off" [class.is-invalid]="invalid('userName')">
+            <div class="invalid-feedback">3 to 50 characters.</div>
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" type="password" class="form-control" formControlName="password" autocomplete="new-password"
+                   [class.is-invalid]="invalid('password')">
+            <div class="invalid-feedback">At least 8 characters.</div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="saving()">{{ saving() ? 'Creating...' : 'Create User' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+  <input type="search" class="form-control form-control-sm w-auto" placeholder="Search name, username, email"
+         aria-label="Search users" (input)="onSearch($any($event.target).value)">
+  <div class="btn-group btn-group-sm" role="group" aria-label="Filter by role">
+    <button type="button" class="btn" [class]="roleFilter() === null ? 'btn btn-secondary' : 'btn btn-outline-secondary'"
+            (click)="filterRole(null)">All</button>
+    @for (role of roles; track role) {
+      <button type="button" [class]="roleFilter() === role ? 'btn btn-secondary' : 'btn btn-outline-secondary'"
+              (click)="filterRole(role)">{{ role }}</button>
+    }
+  </div>
+  <span class="text-muted small ms-auto">{{ total() }} user(s)</span>
+</div>
+
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-striped align-middle mb-0">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Role</th>
+      <th>Email</th>
+      <th>Organization</th>
+      <th>Joined</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.id) {
+        <tr [class.text-muted]="!user.active">
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.userName }}</td>
+          <td><span class="badge" [class]="'badge ' + roleBadge(user.role)">{{ user.role }}</span></td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.organization?.name }}</td>
+          <td>{{ user.createdAt | date: 'mediumDate' }}</td>
+          <td>
+            <span class="badge" [class]="user.active ? 'badge text-bg-success' : 'badge text-bg-secondary'">
+              {{ user.active ? 'Active' : 'Deactivated' }}
+            </span>
+          </td>
+          <td class="text-end">
+            @if (user.id !== auth.user()?.id) {
+              <button type="button" class="btn btn-sm" [class]="user.active ? 'btn btn-sm btn-outline-danger' : 'btn btn-sm btn-outline-success'"
+                      (click)="toggleActive(user)">
+                {{ user.active ? 'Deactivate' : 'Activate' }}
+              </button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="8" class="text-muted text-center">{{ loading() ? 'Loading...' : 'No users found.' }}</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (total() > pageSize) {
+  <ngb-pagination class="d-flex justify-content-center mt-3" [collectionSize]="total()" [pageSize]="pageSize"
+                  [page]="page()" (pageChange)="onPage($event)" [maxSize]="5" [boundaryLinks]="true" />
+}
