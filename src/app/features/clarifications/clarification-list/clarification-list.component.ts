@@ -15,6 +15,8 @@ import { ToastService } from '../../../core/notifications/toast.service';
 import { errorMessage } from '../../../core/utils/api-error';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge.component';
 
+type StatusFilter = ClarificationStatus | 'OVERDUE';
+
 /** One list for three views (set by the route): every clarification, asked of me, asked by me. */
 @Component({
   selector: 'app-clarification-list',
@@ -32,6 +34,8 @@ export class ClarificationListComponent implements OnInit {
 
   /** From the route's data. */
   readonly scope = input<ClarificationScope>('ASSIGNED');
+  /** Optional ?filter=overdue|pending|closed, e.g. from a dashboard card. */
+  readonly filter = input<string>();
 
   protected readonly pageSize = 10;
   protected readonly items = signal<Clarification[]>([]);
@@ -39,7 +43,8 @@ export class ClarificationListComponent implements OnInit {
   protected readonly page = signal(1);
   protected readonly loading = signal(true);
   protected readonly projects = signal<Project[]>([]);
-  protected readonly status = signal<ClarificationStatus | null>(null);
+  /** Status filter; OVERDUE means pending past its due date. */
+  protected readonly status = signal<StatusFilter | null>(null);
   protected readonly projectId = signal<number | null>(null);
   protected readonly search = signal('');
   private readonly searchChanges = new Subject<string>();
@@ -70,6 +75,10 @@ export class ClarificationListComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    const initial = this.filter()?.toUpperCase();
+    if (initial === 'PENDING' || initial === 'CLOSED' || initial === 'OVERDUE') {
+      this.status.set(initial);
+    }
     this.projectService.list().subscribe({
       next: projects => this.projects.set(projects),
       error: error => this.toast.error(errorMessage(error, 'Failed to load projects')),
@@ -85,7 +94,7 @@ export class ClarificationListComponent implements OnInit {
     this.searchChanges.next(value);
   }
 
-  setStatus(status: ClarificationStatus | null): void {
+  setStatus(status: StatusFilter | null): void {
     this.status.set(status);
     this.reload();
   }
@@ -115,7 +124,8 @@ export class ClarificationListComponent implements OnInit {
     this.clarificationService
       .search({
         scope: this.scope(),
-        status: this.status(),
+        status: this.status() === 'OVERDUE' ? null : (this.status() as ClarificationStatus | null),
+        overdue: this.status() === 'OVERDUE',
         projectId: this.projectId(),
         search: this.search(),
         page: this.page() - 1,

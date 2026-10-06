@@ -5,7 +5,7 @@
   <div class="row g-3">
     @for (card of cards(); track card.key) {
       <div class="col-sm-6 col-xl-4">
-        <a class="card h-100 text-decoration-none border-{{ card.tone }}" [routerLink]="card.link">
+        <a class="card h-100 text-decoration-none border-{{ card.tone }}" [routerLink]="card.link" [queryParams]="card.query">
           <div class="card-body">
             <div class="display-6 fw-semibold text-{{ card.tone }}">{{ counts[card.key] ?? 0 }}</div>
             <div class="text-body">{{ card.label }}</div>

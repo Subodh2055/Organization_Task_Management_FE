@@ -11,7 +11,7 @@ const response = (expiresInMs: number): AuthResponse => ({
   expiresAt: new Date(Date.now() + expiresInMs).toISOString(),
   user: {
     id: 1, fullName: 'Sam Staff', designation: 'Engineer', organization: null, email: 'sam@co.com',
-    mobile: '9800000000', userName: 'staff1', role: 'STAFF', active: true, createdAt: new Date().toISOString(),
+    mobile: '9800000000', userName: 'staff1', role: 'STAFF', active: true, emailNotifications: true, createdAt: new Date().toISOString(),
   },
 });
 

@@ -1,0 +1,28 @@
+.bell::after {
+  display: none; // hide the dropdown caret
+}
+
+.unread-badge {
+  font-size: 0.65rem;
+}
+
+.notification-menu {
+  width: 360px;
+  max-width: calc(100vw - 32px);
+}
+
+.notification-list {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #f0f1f3;
+  white-space: normal;
+
+  &.unread {
+    background: #eef5ff;
+    font-weight: 500;
+  }
+}

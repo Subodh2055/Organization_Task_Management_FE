@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/auth/auth.service';
 import { ClarificationAttachment, ClarificationDetail } from '../../../core/models/clarification.model';
+import { UserSummary } from '../../../core/models/user.model';
 import { ClarificationService } from '../../../core/services/clarification.service';
 import { ToastService } from '../../../core/notifications/toast.service';
 import { errorMessage } from '../../../core/utils/api-error';
@@ -24,6 +25,7 @@ export class ClarificationDetailComponent {
   private readonly clarificationService = inject(ClarificationService);
   private readonly toast = inject(ToastService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
 
   /** Route parameter. */
@@ -35,8 +37,19 @@ export class ClarificationDetailComponent {
   protected readonly commenting = signal(false);
   protected readonly uploading = signal(false);
 
+  protected readonly showReassign = signal(false);
+  protected readonly showReopen = signal(false);
+  protected readonly candidates = signal<UserSummary[]>([]);
+  protected readonly reassigning = signal(false);
+  protected readonly reopening = signal(false);
+
   protected readonly answerForm = this.formBuilder.nonNullable.group({ answer: ['', Validators.required] });
   protected readonly commentForm = this.formBuilder.nonNullable.group({ body: ['', Validators.required] });
+  protected readonly reassignForm = this.formBuilder.group({
+    requestedToId: [null as number | null, Validators.required],
+    note: [''],
+  });
+  protected readonly reopenForm = this.formBuilder.nonNullable.group({ reason: ['', Validators.required] });
 
   /** The list this clarification belongs to, for the back link. */
   protected readonly backLink = computed(() => {
@@ -80,6 +93,74 @@ export class ClarificationDetailComponent {
       error: error => {
         this.answering.set(false);
         this.toast.error(errorMessage(error, 'Could not save the answer'));
+      },
+    });
+  }
+
+  toggleReassign(): void {
+    const detail = this.detail();
+    if (!detail) {
+      return;
+    }
+    if (this.showReassign()) {
+      this.showReassign.set(false);
+      return;
+    }
+    this.reassignForm.reset({ requestedToId: null, note: '' });
+    this.showReassign.set(true);
+    this.clarificationService.reassignCandidates(detail.clarification.id).subscribe({
+      next: people => this.candidates.set(people),
+      error: error => this.toast.error(errorMessage(error, 'Could not load who it can be reassigned to')),
+    });
+  }
+
+  reassign(): void {
+    const detail = this.detail();
+    if (!detail || this.reassignForm.invalid || this.reassigning()) {
+      this.reassignForm.markAllAsTouched();
+      return;
+    }
+    const { requestedToId, note } = this.reassignForm.getRawValue();
+    const me = this.auth.user();
+    // The assignee hands it on and loses access; the requester and admins keep it.
+    const losesAccess = this.auth.role() !== 'ADMIN' && detail.clarification.requestedBy.id !== me?.id;
+    this.reassigning.set(true);
+    this.clarificationService.reassign(detail.clarification.id, requestedToId!, note || null).subscribe({
+      next: updated => {
+        this.reassigning.set(false);
+        this.showReassign.set(false);
+        this.toast.success(`Reassigned to ${updated.requestedTo.fullName}`);
+        if (losesAccess) {
+          this.router.navigateByUrl(`${this.auth.homeUrl()}/assigned`);
+        } else {
+          this.load(detail.clarification.id);
+        }
+      },
+      error: error => {
+        this.reassigning.set(false);
+        this.toast.error(errorMessage(error, 'Could not reassign'));
+      },
+    });
+  }
+
+  reopen(): void {
+    const detail = this.detail();
+    if (!detail || this.reopenForm.invalid || this.reopening()) {
+      this.reopenForm.markAllAsTouched();
+      return;
+    }
+    this.reopening.set(true);
+    this.clarificationService.reopen(detail.clarification.id, this.reopenForm.getRawValue().reason).subscribe({
+      next: () => {
+        this.reopening.set(false);
+        this.showReopen.set(false);
+        this.reopenForm.reset();
+        this.toast.success('Clarification reopened');
+        this.load(detail.clarification.id);
+      },
+      error: error => {
+        this.reopening.set(false);
+        this.toast.error(errorMessage(error, 'Could not reopen'));
       },
     });
   }

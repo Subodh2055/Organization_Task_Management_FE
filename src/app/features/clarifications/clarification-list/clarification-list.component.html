@@ -12,6 +12,7 @@
           [ngModel]="status()" (ngModelChange)="setStatus($event)">
     <option [ngValue]="null">All statuses</option>
     <option ngValue="PENDING">Pending</option>
+    <option ngValue="OVERDUE">Overdue</option>
     <option ngValue="CLOSED">Closed</option>
   </select>
   <select class="form-select form-select-sm w-auto" aria-label="Filter by project"
@@ -48,8 +49,8 @@
           <td>{{ item.requestedBy.fullName }}</td>
           <td>{{ item.requestedTo.fullName }}</td>
           <td>{{ item.createdAt | date: 'mediumDate' }}</td>
-          <td>{{ item.expectedClosureDate | date: 'mediumDate' }}</td>
-          <td><app-status-badge [status]="item.status" /></td>
+          <td [class.text-danger]="item.overdue" [class.fw-semibold]="item.overdue">{{ item.expectedClosureDate | date: 'mediumDate' }}</td>
+          <td><app-status-badge [status]="item.status" [overdue]="item.overdue" /></td>
         </tr>
       } @empty {
         <tr><td colspan="7" class="text-muted text-center py-4">{{ loading() ? 'Loading...' : emptyText() }}</td></tr>

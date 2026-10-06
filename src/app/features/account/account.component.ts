@@ -24,6 +24,7 @@ export class AccountComponent implements OnInit {
   protected readonly user = signal<User | null>(null);
   protected readonly submitted = signal(false);
   protected readonly saving = signal(false);
+  protected readonly savingPreferences = signal(false);
   protected readonly form = inject(FormBuilder).nonNullable.group(
     {
       currentPassword: ['', Validators.required],
@@ -47,6 +48,22 @@ export class AccountComponent implements OnInit {
 
   protected get passwordMismatch(): boolean {
     return this.form.hasError('passwordMismatch') && (this.form.controls.confirmPassword.touched || this.submitted());
+  }
+
+  setEmailNotifications(enabled: boolean): void {
+    this.savingPreferences.set(true);
+    this.account.updatePreferences(enabled).subscribe({
+      next: user => {
+        this.savingPreferences.set(false);
+        this.user.set(user);
+        this.toast.success(enabled ? 'Email notifications turned on' : 'Email notifications turned off');
+      },
+      error: error => {
+        this.savingPreferences.set(false);
+        this.user.update(user => (user ? { ...user } : user)); // re-render the switch in its saved state
+        this.toast.error(errorMessage(error, 'Could not save your preference'));
+      },
+    });
   }
 
   changePassword(): void {

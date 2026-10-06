@@ -25,6 +25,7 @@
       </ul>
       @if (auth.user(); as user) {
         <div class="d-flex align-items-center gap-3">
+          <app-notification-bell />
           <a class="text-reset text-decoration-none" [routerLink]="auth.homeUrl() + '/account'">
             {{ user.fullName }}
             <span class="badge text-bg-dark ms-1">{{ user.role }}</span>

@@ -25,6 +25,10 @@ export class AccountService {
     return this.http.get<User>(`${this.url}/auth/me`);
   }
 
+  updatePreferences(emailNotifications: boolean): Observable<User> {
+    return this.http.put<User>(`${this.url}/auth/preferences`, { emailNotifications });
+  }
+
   changePassword(currentPassword: string, newPassword: string): Observable<MessageResponse> {
     return this.http.post<MessageResponse>(`${this.url}/auth/change-password`, { currentPassword, newPassword });
   }

@@ -9,6 +9,7 @@ const clarificationDetail = () =>
   import('./features/clarifications/clarification-detail/clarification-detail.component').then(m => m.ClarificationDetailComponent);
 const dashboard = () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent);
 const account = () => import('./features/account/account.component').then(m => m.AccountComponent);
+const notifications = () => import('./features/notifications/notifications.component').then(m => m.NotificationsComponent);
 const scope = (value: ClarificationScope) => ({ scope: value });
 
 // Staff and customers get the same pages: what was asked of them, what they asked, and a new request form.
@@ -24,6 +25,7 @@ const memberPages: Routes = [
   },
   { path: 'clarifications/:id', title: 'Clarification', loadComponent: clarificationDetail },
   { path: 'account', title: 'My Account', loadComponent: account },
+  { path: 'notifications', title: 'Notifications', loadComponent: notifications },
 ];
 
 const portal = () => import('./layout/portal-layout/portal-layout.component').then(m => m.PortalLayoutComponent);
@@ -78,6 +80,7 @@ export const routes: Routes = [
       { path: 'clarifications', title: 'All Clarifications', loadComponent: clarificationList, data: scope('ALL') },
       { path: 'clarifications/:id', title: 'Clarification', loadComponent: clarificationDetail },
       { path: 'account', title: 'My Account', loadComponent: account },
+      { path: 'notifications', title: 'Notifications', loadComponent: notifications },
     ],
   },
   { path: 'staff', loadComponent: portal, canActivate: [authGuard], data: { roles: ['STAFF'] }, children: memberPages },

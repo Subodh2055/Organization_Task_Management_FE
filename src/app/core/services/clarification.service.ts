@@ -12,6 +12,7 @@ import {
   CreateClarificationRequest,
 } from '../models/clarification.model';
 import { Page } from '../models/page.model';
+import { UserSummary } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class ClarificationService {
@@ -22,6 +23,9 @@ export class ClarificationService {
     let params = new HttpParams().set('scope', query.scope).set('page', query.page).set('size', query.size);
     if (query.status) {
       params = params.set('status', query.status);
+    }
+    if (query.overdue) {
+      params = params.set('overdue', true);
     }
     if (query.projectId) {
       params = params.set('projectId', query.projectId);
@@ -43,6 +47,21 @@ export class ClarificationService {
   /** Only the user it was asked of can answer, once. */
   answer(id: number, answer: string): Observable<Clarification> {
     return this.http.post<Clarification>(`${this.url}/${id}/answer`, { answer });
+  }
+
+  /** People a pending clarification can be handed to. */
+  reassignCandidates(id: number): Observable<UserSummary[]> {
+    return this.http.get<UserSummary[]>(`${this.url}/${id}/reassign-candidates`);
+  }
+
+  /** The requester, the assignee or an admin hands it to someone else. */
+  reassign(id: number, requestedToId: number, note: string | null): Observable<Clarification> {
+    return this.http.post<Clarification>(`${this.url}/${id}/reassign`, { requestedToId, note });
+  }
+
+  /** The requester or an admin reopens an answered clarification. */
+  reopen(id: number, reason: string): Observable<Clarification> {
+    return this.http.post<Clarification>(`${this.url}/${id}/reopen`, { reason });
   }
 
   addComment(id: number, body: string): Observable<ClarificationComment> {

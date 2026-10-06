@@ -24,6 +24,14 @@
             <dt class="col-sm-4">Member since</dt>
             <dd class="col-sm-8">{{ user.createdAt | date: 'mediumDate' }}</dd>
           </dl>
+          <hr>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="emailNotifications"
+                   [checked]="user.emailNotifications" [disabled]="savingPreferences()"
+                   (change)="setEmailNotifications($any($event.target).checked)">
+            <label class="form-check-label" for="emailNotifications">Email me about my clarifications</label>
+            <div class="form-text">You always see notifications under the bell. This only controls the email copies.</div>
+          </div>
         } @else {
           <span class="text-muted">Loading...</span>
         }

@@ -14,6 +14,7 @@ export interface User {
   userName: string;
   role: Role;
   active: boolean;
+  emailNotifications: boolean;
   createdAt: string;
 }
 

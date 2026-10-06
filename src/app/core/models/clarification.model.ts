@@ -21,6 +21,8 @@ export interface Clarification {
   answeredAt: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Still pending after its expected closure date. */
+  overdue: boolean;
 }
 
 export interface ClarificationComment {
@@ -45,6 +47,8 @@ export interface ClarificationDetail {
   attachments: ClarificationAttachment[];
   canAnswer: boolean;
   canParticipate: boolean;
+  canReassign: boolean;
+  canReopen: boolean;
 }
 
 export interface CreateClarificationRequest {
@@ -59,6 +63,8 @@ export interface CreateClarificationRequest {
 export interface ClarificationQuery {
   scope: ClarificationScope;
   status?: ClarificationStatus | null;
+  /** Only pending items past their due date. */
+  overdue?: boolean;
   projectId?: number | null;
   search?: string | null;
   /** Zero-based page number. */

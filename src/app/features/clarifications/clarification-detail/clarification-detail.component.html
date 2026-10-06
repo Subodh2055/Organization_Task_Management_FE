@@ -7,8 +7,72 @@
 
   <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mb-3">
     <h4 class="mb-0">{{ c.subject }}</h4>
-    <app-status-badge [status]="c.status" />
+    <app-status-badge [status]="c.status" [overdue]="c.overdue" />
+    <div class="ms-auto d-flex gap-2">
+      @if (detail.canReassign) {
+        <button type="button" class="btn btn-outline-primary btn-sm" (click)="toggleReassign()">
+          {{ showReassign() ? "Cancel" : "Reassign" }}
+        </button>
+      }
+      @if (detail.canReopen) {
+        <button type="button" class="btn btn-outline-warning btn-sm" (click)="showReopen.set(!showReopen())">
+          {{ showReopen() ? "Cancel" : "Reopen" }}
+        </button>
+      }
+    </div>
   </div>
+
+  @if (showReassign()) {
+    <div class="card border-primary mb-4">
+      <div class="card-header">Reassign to someone else</div>
+      <div class="card-body">
+        <form [formGroup]="reassignForm" (ngSubmit)="reassign()" novalidate>
+          <div class="row g-3">
+            <div class="col-md-5">
+              <label for="reassignTo" class="form-label">New assignee</label>
+              <select id="reassignTo" class="form-select" formControlName="requestedToId"
+                      [class.is-invalid]="reassignForm.controls.requestedToId.touched && reassignForm.controls.requestedToId.invalid">
+                <option [ngValue]="null" disabled>{{ candidates().length ? "Select a person" : "Nobody else can take this" }}</option>
+                @for (person of candidates(); track person.id) {
+                  <option [ngValue]="person.id">{{ person.fullName }} ({{ person.userName }})</option>
+                }
+              </select>
+              <div class="invalid-feedback">Choose who should answer.</div>
+            </div>
+            <div class="col-md-7">
+              <label for="reassignNote" class="form-label">Note <span class="text-muted">(optional)</span></label>
+              <input id="reassignNote" class="form-control" formControlName="note" placeholder="Why are you passing it on?">
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-primary" [disabled]="reassigning() || !candidates().length">
+              {{ reassigning() ? "Reassigning..." : "Reassign" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  @if (showReopen()) {
+    <div class="card border-warning mb-4">
+      <div class="card-header">Reopen: the answer does not settle it</div>
+      <div class="card-body">
+        <form [formGroup]="reopenForm" (ngSubmit)="reopen()" novalidate>
+          <label for="reopenReason" class="form-label">What is still missing?</label>
+          <textarea id="reopenReason" class="form-control" rows="3" formControlName="reason"
+                    [class.is-invalid]="reopenForm.controls.reason.touched && reopenForm.controls.reason.invalid"></textarea>
+          <div class="invalid-feedback">A reason is required.</div>
+          <div class="form-text">{{ c.requestedTo.fullName }} will be asked again. The current answer stays in the discussion.</div>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-warning" [disabled]="reopening()">
+              {{ reopening() ? "Reopening..." : "Reopen" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
 
   <div class="row g-4">
     <div class="col-lg-8">
@@ -95,7 +159,9 @@
             <dt class="col-5">Raised</dt>
             <dd class="col-7">{{ c.createdAt | date: 'medium' }}</dd>
             <dt class="col-5">Due</dt>
-            <dd class="col-7">{{ (c.expectedClosureDate | date: 'mediumDate') ?? '-' }}</dd>
+            <dd class="col-7" [class.text-danger]="c.overdue" [class.fw-semibold]="c.overdue">
+              {{ (c.expectedClosureDate | date: 'mediumDate') ?? '-' }}@if (c.overdue) { (overdue) }
+            </dd>
             <dt class="col-5">Email reference</dt>
             <dd class="col-7 text-break">{{ c.emailReference ?? '-' }}</dd>
           </dl>
