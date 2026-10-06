@@ -22,7 +22,7 @@
           <label for="requestedToId" class="form-label">Ask ({{ counterpart() }})</label>
           <select id="requestedToId" class="form-select" formControlName="requestedToId" [class.is-invalid]="invalid('requestedToId')">
             <option [ngValue]="null" disabled>
-              {{ auth.role() === 'STAFF' && !form.controls.projectId.value ? 'Choose a project first' : 'Select a ' + counterpart() }}
+              {{ !form.controls.projectId.value ? 'Choose a project first' : 'Select a ' + counterpart() }}
             </option>
             @for (person of people(); track person.id) {
               <option [ngValue]="person.id">
@@ -32,7 +32,7 @@
           </select>
           <div class="invalid-feedback">Choose who to ask.</div>
           @if (form.controls.projectId.value && people().length === 0) {
-            <div class="form-text">There is no {{ counterpart() }} to ask for this project.</div>
+            <div class="form-text">There is no {{ counterpart() }} on this project to ask.</div>
           }
         </div>
         <div class="col-12">
@@ -46,11 +46,30 @@
                     [class.is-invalid]="invalid('description')"></textarea>
           <div class="invalid-feedback">Describe what needs clarifying.</div>
         </div>
+        <div class="col-md-3">
+          <label for="priority" class="form-label">Priority</label>
+          <select id="priority" class="form-select" formControlName="priority">
+            @for (p of priorities; track p) {
+              <option [ngValue]="p">{{ label(p) }}</option>
+            }
+          </select>
+          @if (form.controls.priority.value === 'URGENT') {
+            <div class="form-text">Urgent items get their reminder two days before the due date.</div>
+          }
+        </div>
+        <div class="col-md-3">
+          <label for="category" class="form-label">Category</label>
+          <select id="category" class="form-select" formControlName="category">
+            @for (c of categories; track c) {
+              <option [ngValue]="c">{{ label(c) }}</option>
+            }
+          </select>
+        </div>
         <div class="col-md-6">
           <label for="expectedClosureDate" class="form-label">Expected Closure Date <span class="text-muted">(optional)</span></label>
           <input id="expectedClosureDate" type="date" class="form-control" [min]="today" formControlName="expectedClosureDate">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
           <label for="emailReference" class="form-label">Email Reference <span class="text-muted">(optional)</span></label>
           <input id="emailReference" type="email" class="form-control" formControlName="emailReference"
                  [class.is-invalid]="invalid('emailReference')">

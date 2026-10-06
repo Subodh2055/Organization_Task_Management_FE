@@ -15,6 +15,20 @@
     <option ngValue="OVERDUE">Overdue</option>
     <option ngValue="CLOSED">Closed</option>
   </select>
+  <select class="form-select form-select-sm w-auto" aria-label="Filter by priority"
+          [ngModel]="priority()" (ngModelChange)="setPriority($event)">
+    <option [ngValue]="null">All priorities</option>
+    @for (p of priorities; track p) {
+      <option [ngValue]="p">{{ label(p) }}</option>
+    }
+  </select>
+  <select class="form-select form-select-sm w-auto" aria-label="Filter by category"
+          [ngModel]="category()" (ngModelChange)="setCategory($event)">
+    <option [ngValue]="null">All categories</option>
+    @for (c of categories; track c) {
+      <option [ngValue]="c">{{ label(c) }}</option>
+    }
+  </select>
   <select class="form-select form-select-sm w-auto" aria-label="Filter by project"
           [ngModel]="projectId()" (ngModelChange)="setProject($event)">
     <option [ngValue]="null">All projects</option>
@@ -31,6 +45,7 @@
     <thead>
     <tr>
       <th>Subject</th>
+      <th>Priority</th>
       <th>Project</th>
       <th>Asked by</th>
       <th>Asked to</th>
@@ -45,7 +60,11 @@
           <td>
             <a [routerLink]="[auth.homeUrl(), 'clarifications', item.id]" (click)="$event.stopPropagation()">{{ item.subject }}</a>
           </td>
-          <td>{{ item.project.name }}</td>
+          <td><app-priority-badge [priority]="item.priority" /></td>
+          <td>
+            {{ item.project.name }}
+            <div class="small text-muted">{{ item.category | label }}</div>
+          </td>
           <td>{{ item.requestedBy.fullName }}</td>
           <td>{{ item.requestedTo.fullName }}</td>
           <td>{{ item.createdAt | date: 'mediumDate' }}</td>
@@ -53,7 +72,7 @@
           <td><app-status-badge [status]="item.status" [overdue]="item.overdue" /></td>
         </tr>
       } @empty {
-        <tr><td colspan="7" class="text-muted text-center py-4">{{ loading() ? 'Loading...' : emptyText() }}</td></tr>
+        <tr><td colspan="8" class="text-muted text-center py-4">{{ loading() ? 'Loading...' : emptyText() }}</td></tr>
       }
     </tbody>
   </table>

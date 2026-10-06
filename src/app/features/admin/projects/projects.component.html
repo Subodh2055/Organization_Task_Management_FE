@@ -50,6 +50,7 @@
       <th>Project</th>
       <th>Organization</th>
       <th>Description</th>
+      <th class="text-end">Members</th>
     </tr>
     </thead>
     <tbody>
@@ -58,9 +59,21 @@
           <td>{{ project.name }}</td>
           <td>{{ project.organization.name }}</td>
           <td class="text-muted">{{ project.description }}</td>
+          <td class="text-end">
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleMembers(project.id)">
+              {{ openMembers() === project.id ? 'Close' : 'Manage' }}
+            </button>
+          </td>
         </tr>
+        @if (openMembers() === project.id) {
+          <tr>
+            <td colspan="4" class="bg-light">
+              <app-project-members [project]="project" />
+            </td>
+          </tr>
+        }
       } @empty {
-        <tr><td colspan="3" class="text-muted text-center">No projects yet.</td></tr>
+        <tr><td colspan="4" class="text-muted text-center">No projects yet.</td></tr>
       }
     </tbody>
   </table>

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { catchError, concat, of, toArray } from 'rxjs';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { CATEGORIES, ClarificationCategory, ClarificationPriority, PRIORITIES, label } from '../../../core/models/clarification.model';
 import { Project } from '../../../core/models/project.model';
 import { UserSummary } from '../../../core/models/user.model';
 import { ClarificationService } from '../../../core/services/clarification.service';
@@ -48,26 +49,27 @@ export class ClarificationFormComponent implements OnInit {
     description: ['', [Validators.required, Validators.maxLength(4000)]],
     expectedClosureDate: [''],
     emailReference: ['', Validators.email],
+    priority: ['NORMAL' as ClarificationPriority],
+    category: ['GENERAL' as ClarificationCategory],
   });
+
+  protected readonly priorities = PRIORITIES;
+  protected readonly categories = CATEGORIES;
+  protected readonly label = label;
 
   ngOnInit(): void {
     this.projectService.list().subscribe({
       next: projects => this.projects.set(projects),
       error: error => this.toast.error(errorMessage(error, 'Failed to load projects')),
     });
-    if (this.auth.role() === 'STAFF') {
-      // Staff: the people to ask are the customers of the chosen project's organization.
-      this.form.controls.projectId.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(projectId => {
-        this.form.controls.requestedToId.reset(null);
-        this.people.set([]);
-        if (projectId) {
-          this.loadPeople(projectId);
-        }
-      });
-    } else {
-      // Customers can ask any staff member, so the list doesn't depend on the project.
-      this.loadPeople(null);
-    }
+    // Who can be asked depends on the project (its organization and members).
+    this.form.controls.projectId.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(projectId => {
+      this.form.controls.requestedToId.reset(null);
+      this.people.set([]);
+      if (projectId) {
+        this.loadPeople(projectId);
+      }
+    });
   }
 
   protected invalid(name: string): boolean {
@@ -111,6 +113,8 @@ export class ClarificationFormComponent implements OnInit {
         description: value.description!,
         expectedClosureDate: value.expectedClosureDate || null,
         emailReference: value.emailReference || null,
+        priority: value.priority ?? 'NORMAL',
+        category: value.category ?? 'GENERAL',
       })
       .subscribe({
         next: clarification => {

@@ -4,21 +4,48 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../../core/auth/auth.service';
-import { ClarificationAttachment, ClarificationDetail } from '../../../core/models/clarification.model';
+import {
+  ActivityType,
+  CATEGORIES,
+  ClarificationActivity,
+  ClarificationAttachment,
+  ClarificationCategory,
+  ClarificationDetail,
+  ClarificationPriority,
+  PRIORITIES,
+  UpdateClarificationRequest,
+  label,
+} from '../../../core/models/clarification.model';
 import { UserSummary } from '../../../core/models/user.model';
 import { ClarificationService } from '../../../core/services/clarification.service';
 import { ToastService } from '../../../core/notifications/toast.service';
 import { errorMessage } from '../../../core/utils/api-error';
 import { saveBlob } from '../../../core/utils/download';
 import { StatusBadgeComponent } from '../../../shared/components/status-badge.component';
+import { PriorityBadgeComponent } from '../../../shared/components/priority-badge.component';
+import { LabelPipe } from '../../../shared/pipes/label.pipe';
 import { FileSizePipe } from '../../../shared/pipes/file-size.pipe';
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 
+/** How each history entry reads after the actor's name. */
+const ACTIVITY_TEXT: Record<ActivityType, string> = {
+  CREATED: 'raised this clarification',
+  ANSWERED: 'answered',
+  REASSIGNED: 'reassigned it',
+  REOPENED: 'reopened it',
+  PRIORITY_CHANGED: 'changed the priority',
+  CATEGORY_CHANGED: 'changed the category',
+  DUE_DATE_CHANGED: 'changed the due date',
+  ATTACHMENT_ADDED: 'attached a file',
+  ATTACHMENT_REMOVED: 'removed a file',
+  REMINDER_SENT: 'sent a reminder',
+};
+
 /** One clarification: the question, its answer, the comment thread and attached files. */
 @Component({
   selector: 'app-clarification-detail',
-  imports: [ReactiveFormsModule, RouterLink, DatePipe, StatusBadgeComponent, FileSizePipe],
+  imports: [ReactiveFormsModule, RouterLink, DatePipe, StatusBadgeComponent, PriorityBadgeComponent, LabelPipe, FileSizePipe],
   templateUrl: './clarification-detail.component.html',
 })
 export class ClarificationDetailComponent {
@@ -39,6 +66,12 @@ export class ClarificationDetailComponent {
 
   protected readonly showReassign = signal(false);
   protected readonly showReopen = signal(false);
+  protected readonly showEdit = signal(false);
+  protected readonly savingEdit = signal(false);
+  protected readonly priorities = PRIORITIES;
+  protected readonly categories = CATEGORIES;
+  protected readonly label = label;
+  protected readonly today = new Date().toISOString().slice(0, 10);
   protected readonly candidates = signal<UserSummary[]>([]);
   protected readonly reassigning = signal(false);
   protected readonly reopening = signal(false);
@@ -50,6 +83,11 @@ export class ClarificationDetailComponent {
     note: [''],
   });
   protected readonly reopenForm = this.formBuilder.nonNullable.group({ reason: ['', Validators.required] });
+  protected readonly editForm = this.formBuilder.group({
+    priority: ['NORMAL' as ClarificationPriority],
+    category: ['GENERAL' as ClarificationCategory],
+    expectedClosureDate: [''],
+  });
 
   /** The list this clarification belongs to, for the back link. */
   protected readonly backLink = computed(() => {
@@ -93,6 +131,75 @@ export class ClarificationDetailComponent {
       error: error => {
         this.answering.set(false);
         this.toast.error(errorMessage(error, 'Could not save the answer'));
+      },
+    });
+  }
+
+  activityText(activity: ClarificationActivity): string {
+    return ACTIVITY_TEXT[activity.type];
+  }
+
+  toggleEdit(): void {
+    const detail = this.detail();
+    if (!detail) {
+      return;
+    }
+    if (!this.showEdit()) {
+      const c = detail.clarification;
+      this.editForm.reset({ priority: c.priority, category: c.category, expectedClosureDate: c.expectedClosureDate ?? '' });
+      // Only the fields this user may change are editable.
+      if (detail.canEditClassification) {
+        this.editForm.controls.priority.enable();
+        this.editForm.controls.category.enable();
+      } else {
+        this.editForm.controls.priority.disable();
+        this.editForm.controls.category.disable();
+      }
+      if (detail.canChangeDueDate) {
+        this.editForm.controls.expectedClosureDate.enable();
+      } else {
+        this.editForm.controls.expectedClosureDate.disable();
+      }
+    }
+    this.showEdit.set(!this.showEdit());
+  }
+
+  saveEdit(): void {
+    const detail = this.detail();
+    if (!detail || this.savingEdit()) {
+      return;
+    }
+    const c = detail.clarification;
+    const value = this.editForm.getRawValue();
+    const changes: UpdateClarificationRequest = {};
+    if (detail.canEditClassification && value.priority && value.priority !== c.priority) {
+      changes.priority = value.priority;
+    }
+    if (detail.canEditClassification && value.category && value.category !== c.category) {
+      changes.category = value.category;
+    }
+    if (detail.canChangeDueDate && (value.expectedClosureDate || null) !== c.expectedClosureDate) {
+      if (value.expectedClosureDate) {
+        changes.expectedClosureDate = value.expectedClosureDate;
+      } else {
+        changes.clearDueDate = true;
+      }
+    }
+    if (!Object.keys(changes).length) {
+      this.showEdit.set(false);
+      return;
+    }
+    this.savingEdit.set(true);
+    this.clarificationService.update(c.id, changes).subscribe({
+      next: () => {
+        this.savingEdit.set(false);
+        this.showEdit.set(false);
+        this.toast.success('Clarification updated');
+        this.load(c.id);
+      },
+      error: error => {
+        this.savingEdit.set(false);
+        this.toast.error(errorMessage(error, 'Could not save the changes'));
       },
     });
   }

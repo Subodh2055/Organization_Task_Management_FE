@@ -10,6 +10,7 @@ import {
   ClarificationDetail,
   ClarificationQuery,
   CreateClarificationRequest,
+  UpdateClarificationRequest,
 } from '../models/clarification.model';
 import { Page } from '../models/page.model';
 import { UserSummary } from '../models/user.model';
@@ -26,6 +27,12 @@ export class ClarificationService {
     }
     if (query.overdue) {
       params = params.set('overdue', true);
+    }
+    if (query.priority) {
+      params = params.set('priority', query.priority);
+    }
+    if (query.category) {
+      params = params.set('category', query.category);
     }
     if (query.projectId) {
       params = params.set('projectId', query.projectId);
@@ -47,6 +54,11 @@ export class ClarificationService {
   /** Only the user it was asked of can answer, once. */
   answer(id: number, answer: string): Observable<Clarification> {
     return this.http.post<Clarification>(`${this.url}/${id}/answer`, { answer });
+  }
+
+  /** Change priority, category or due date of a pending clarification. */
+  update(id: number, changes: UpdateClarificationRequest): Observable<Clarification> {
+    return this.http.patch<Clarification>(`${this.url}/${id}`, changes);
   }
 
   /** People a pending clarification can be handed to. */

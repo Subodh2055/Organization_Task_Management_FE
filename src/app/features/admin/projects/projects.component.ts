@@ -7,10 +7,11 @@ import { OrganizationService } from '../../../core/services/organization.service
 import { ProjectService } from '../../../core/services/project.service';
 import { ToastService } from '../../../core/notifications/toast.service';
 import { errorMessage } from '../../../core/utils/api-error';
+import { ProjectMembersComponent } from './project-members.component';
 
 @Component({
   selector: 'app-projects',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, ProjectMembersComponent],
   templateUrl: './projects.component.html',
 })
 export class ProjectsComponent implements OnInit {
@@ -21,6 +22,8 @@ export class ProjectsComponent implements OnInit {
   protected readonly projects = signal<Project[]>([]);
   protected readonly organizations = signal<Organization[]>([]);
   protected readonly organizationFilter = signal<number | null>(null);
+  /** The project whose members panel is open. */
+  protected readonly openMembers = signal<number | null>(null);
   protected readonly submitted = signal(false);
   protected readonly saving = signal(false);
   protected readonly form = inject(FormBuilder).group({
@@ -40,6 +43,10 @@ export class ProjectsComponent implements OnInit {
   protected invalid(name: 'organizationId' | 'name'): boolean {
     const control = this.form.controls[name];
     return control.invalid && (control.touched || this.submitted());
+  }
+
+  toggleMembers(projectId: number): void {
+    this.openMembers.set(this.openMembers() === projectId ? null : projectId);
   }
 
   filterBy(organizationId: number | null): void {

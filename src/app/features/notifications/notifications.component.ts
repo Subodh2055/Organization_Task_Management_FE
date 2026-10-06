@@ -15,6 +15,7 @@ const LABELS: Record<NotificationType, string> = {
   COMMENT_ADDED: 'Comment',
   CLARIFICATION_REASSIGNED: 'Reassigned',
   CLARIFICATION_REOPENED: 'Reopened',
+  CLARIFICATION_UPDATED: 'Updated',
   DUE_SOON: 'Due soon',
   OVERDUE: 'Overdue',
 };
@@ -92,6 +93,7 @@ export class NotificationsComponent implements OnInit {
         return 'text-bg-success';
       case 'CLARIFICATION_REOPENED':
       case 'CLARIFICATION_REASSIGNED':
+      case 'CLARIFICATION_UPDATED':
         return 'text-bg-info';
       default:
         return 'text-bg-secondary';

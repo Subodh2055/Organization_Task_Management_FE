@@ -1,0 +1,36 @@
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="fw-semibold mb-1">Staff</div>
+    @for (member of staffMembers(); track member.id) {
+      <span class="badge text-bg-primary me-1 mb-1 member">
+        {{ member.fullName }}
+        <button type="button" class="btn-close btn-close-white ms-1" [attr.aria-label]="'Remove ' + member.fullName"
+                [disabled]="busy()" (click)="remove(member)"></button>
+      </span>
+    } @empty {
+      <div class="small text-muted">No staff members: any staff member can work on this project.</div>
+    }
+  </div>
+  <div class="col-md-6">
+    <div class="fw-semibold mb-1">Customers</div>
+    @for (member of customerMembers(); track member.id) {
+      <span class="badge text-bg-info me-1 mb-1 member">
+        {{ member.fullName }}
+        <button type="button" class="btn-close ms-1" [attr.aria-label]="'Remove ' + member.fullName"
+                [disabled]="busy()" (click)="remove(member)"></button>
+      </span>
+    } @empty {
+      <div class="small text-muted">No customer members: any customer of {{ project().organization.name }} can use it.</div>
+    }
+  </div>
+</div>
+<div class="d-flex gap-2 mt-3">
+  <select class="form-select form-select-sm w-auto" aria-label="User to add"
+          [ngModel]="selected()" (ngModelChange)="selected.set($event)">
+    <option [ngValue]="null">Add a member...</option>
+    @for (user of candidates(); track user.id) {
+      <option [ngValue]="user.id">{{ user.fullName }} ({{ user.role === 'STAFF' ? 'Staff' : 'Customer' }})</option>
+    }
+  </select>
+  <button type="button" class="btn btn-sm btn-primary" [disabled]="!selected() || busy()" (click)="add()">Add</button>
+</div>

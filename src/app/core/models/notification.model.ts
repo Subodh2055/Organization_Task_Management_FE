@@ -4,6 +4,7 @@ export type NotificationType =
   | 'COMMENT_ADDED'
   | 'CLARIFICATION_REASSIGNED'
   | 'CLARIFICATION_REOPENED'
+  | 'CLARIFICATION_UPDATED'
   | 'DUE_SOON'
   | 'OVERDUE';
 

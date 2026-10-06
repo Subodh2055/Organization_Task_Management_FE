@@ -12,7 +12,7 @@ interface Card {
   link: string;
   tone: 'primary' | 'info' | 'warning' | 'success' | 'danger';
   /** Opens the list already filtered, e.g. { filter: 'overdue' }. */
-  query?: Record<string, string>;
+  query?: { filter?: string; priority?: string };
 }
 
 @Component({
@@ -37,10 +37,12 @@ export class DashboardComponent implements OnInit {
         { key: 'customers', label: 'Customers', link: `${base}/users`, tone: 'info' },
         { key: 'pending', label: 'Pending clarifications', link: `${base}/clarifications`, tone: 'warning', query: { filter: 'pending' } },
         { key: 'overdue', label: 'Overdue clarifications', link: `${base}/clarifications`, tone: 'danger', query: { filter: 'overdue' } },
+        { key: 'urgent', label: 'Urgent and still open', link: `${base}/clarifications`, tone: 'danger', query: { filter: 'pending', priority: 'urgent' } },
         { key: 'closed', label: 'Closed clarifications', link: `${base}/clarifications`, tone: 'success', query: { filter: 'closed' } },
       ];
     }
     return [
+      { key: 'assignedUrgent', label: 'Urgent, waiting for my answer', link: `${base}/assigned`, tone: 'danger', query: { filter: 'pending', priority: 'urgent' } },
       { key: 'assignedOverdue', label: 'Overdue, waiting for my answer', link: `${base}/assigned`, tone: 'danger', query: { filter: 'overdue' } },
       { key: 'assignedPending', label: 'Waiting for my answer', link: `${base}/assigned`, tone: 'warning', query: { filter: 'pending' } },
       { key: 'assignedClosed', label: 'Answered by me', link: `${base}/assigned`, tone: 'success', query: { filter: 'closed' } },
