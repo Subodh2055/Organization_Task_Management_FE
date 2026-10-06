@@ -1,95 +1,84 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {AddOrganizationServiceService} from "./add-organization-service.service";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
 import {Organization} from "./Organization";
-import {ObjectUtil} from "../ObjectUtil";
+import {ToastService} from "../ToastService";
+import {Alert, AlertType} from "../Alert";
 
-
+/** Admin portal: list and add organizations. */
 @Component({
   selector: 'app-add-organization',
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './add-organization.component.html',
   styleUrls: ['./add-organization.component.scss']
 })
 export class AddOrganizationComponent implements OnInit {
-  organization: Organization;
-  organizations: Organization[];
-  organizationData: any
-  @Input() formValue: Organization
+  organizations: Organization[] = [];
   submitted: boolean = false
-  organizationName: any
+  saving: boolean = false
   addForm: FormGroup
 
   constructor(
     private addOrganizationServiceService: AddOrganizationServiceService,
     private formBuilder: FormBuilder,
-    private route: Router,
+    private toastService: ToastService,
   ) {
   }
 
   ngOnInit(): void {
-
     this.formMaker();
-    if (!ObjectUtil.isEmpty(this.formValue)) {
-      this.organization = this.formValue;
-      this.formMaker();
-    }
+    this.getOrganizationData();
   }
 
   getOrganizationData() {
     this.addOrganizationServiceService.getOrganization().subscribe(
       response => {
         this.organizations = response;
-        this.organizationData = response;
-        console.log(this.organizationData, 'organization data')
-
       },
       error => {
-        console.log(error)
+        this.toastService.show(new Alert(AlertType.ERROR, 'Failed to load organizations'));
       }
     )
   }
-
-  getOrganizationByEmail(){
-    this.addOrganizationServiceService.getOrganizationByEmail(this.addForm.get('email')?.value).subscribe(
-      response => {
-        const mail = response;
-        console.log(mail,'mail')
-
-      }
-    )
-  }
-
 
   private formMaker() {
     this.addForm = this.formBuilder.group({
-      organizationName: [undefined, Validators.required],
-      address: [undefined, Validators.required],
-      phone: [undefined, Validators.required],
-      email: [undefined, Validators.compose([Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])],
-      website: [undefined],
+      organizationName: ['', Validators.required],
+      address: ['', Validators.required],
+      phone: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      website: [''],
     })
 
   }
 
   addOrganization() {
     this.submitted = true;
-    if (this.addForm.invalid) {
-    } else {
-      this.addOrganizationServiceService.addOrganization(this.addForm.value).subscribe(
-        response => {
-          console.log(response, 'response')
-          this.nextToAddProject();
-        })
+    if (this.addForm.invalid || this.saving) {
+      return;
     }
+    this.saving = true;
+    this.addOrganizationServiceService.addOrganization(this.addForm.value).subscribe(
+      response => {
+        this.saving = false;
+        this.submitted = false;
+        this.toastService.show(new Alert(AlertType.SUCCESS, 'Organization added successfully'));
+        this.addForm.reset({organizationName: '', address: '', phone: '', email: '', website: ''});
+        this.getOrganizationData();
+      },
+      error => {
+        this.saving = false;
+        this.toastService.show(new Alert(AlertType.ERROR, 'Failed to add organization'));
+      })
   }
 
   get addFormControl(): { [key: string]: AbstractControl } {
     return this.addForm.controls;
   }
 
-  nextToAddProject() {
-    this.route.navigate(['add-project'])
-
+  invalid(name: string): boolean {
+    const control = this.addFormControl[name];
+    return control.invalid && (control.touched || this.submitted);
   }
 }

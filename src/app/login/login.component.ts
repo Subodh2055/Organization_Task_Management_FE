@@ -1,74 +1,52 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Organization} from "../add-organization/Organization";
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {SignupService} from "../signup/signup.service";
-import {Login} from "./login";
-import {LoginService} from "./login.service";
-import {ObjectUtil} from "../ObjectUtil";
 import {Router} from "@angular/router";
+import {ToastService} from "../ToastService";
+import {Alert, AlertType} from "../Alert";
+import {AuthService} from "../core/auth.service";
 
 @Component({
   selector: 'app-login',
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
-  login: Login
-  logins: Login
-  loginData: any
-  signUpData: any
   addForm: FormGroup
-  @Input() formValue: Organization
   submitted: boolean = false
+  loading: boolean = false
 
   constructor(
-    private loginService: LoginService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private signupService: SignupService,
     private route: Router,
+    private toastService: ToastService,
   ) {
   }
 
   ngOnInit(): void {
     this.formMaker();
-    if (!ObjectUtil.isEmpty(this.formValue)) {
-      this.login = this.addForm.value;
-      this.formMaker();
-
-    }
-    this.getUserData();
-
-
   }
 
   addLogin() {
     this.submitted = true
-    if(this.addForm.valid) {
-      this.loginService.addLogin(this.addForm.value).subscribe(
-        response => {
-          if(response !== null) {
-            this.nextToRequestClarification();
-          }
-        });
+    if (this.addForm.invalid || this.loading) {
+      return;
     }
-
-
-  }
-
-  getLoginData() {
-    this.loginService.getLogin().subscribe(
+    this.loading = true;
+    const {username, password} = this.addForm.value;
+    this.authService.login(username, password).subscribe(
       response => {
-        console.log(response, 'logins');
-        this.logins = response;
-        this.loginData = response;
-        console.log(this.loginData, 'login Data')
-
+        this.loading = false;
+        this.toastService.show(new Alert(AlertType.SUCCESS, `Welcome, ${response.user.fullName}`));
+        this.route.navigateByUrl(this.authService.homeUrl());
       },
       error => {
-        console.log(error)
-      }
-    )
+        this.loading = false;
+        this.toastService.show(new Alert(AlertType.ERROR, 'Invalid username or password'));
+      });
   }
 
   get addFormControl(): { [key: string]: AbstractControl } {
@@ -81,23 +59,6 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
     })
 
-  }
-
-  getUserData() {
-    console.log('hello')
-    this.signupService.getUser().subscribe(
-      response => {
-        this.signUpData = response;
-        console.log(this.signUpData, 'signUp data')
-
-      },
-      error => {
-        console.log(error)
-      }
-    )
-  }
-  nextToRequestClarification(){
-    this.route.navigate(['request-clarification'])
   }
 
 }

@@ -1,43 +1,49 @@
-<div class="form-box">
-  <form [formGroup]="addForm">
-    <div class="col-md-12">
-      <select class="form-control  form-control-tiny" formControlName="organizationName" id="organizationName">
-        <option [value]="null" selected hidden>Organization Name</option>
-        <option *ngFor="let org of organizationData"
-                [ngValue]="org">
-          {{org.organizationName}}
-      </select>
-    </div>
-    <div class="col-md-12 mt-3">
-      <label class="form-label" style="color: white; font-size: large">Project Name</label>
-      <input type="text"
-             id="projectName"
-             class='form-control'
-             [ngClass]="{ 'is-invalid': submitted && addFormControl['projectName']?.errors, 'is-valid': addFormControl['projectName']?.valid }"
-             formControlName='projectName'
-             placeholder='Enter ProjectName' ngModel/>
-      <span
-        *ngIf="submitted || addFormControl['projectName'].touched || addFormControl['projectName'].dirty && addFormControl['projectName'].invalid"
-        class="info-msg text-danger">
-                <small
-                  *ngIf="addFormControl['projectName'].errors && addFormControl['projectName'].errors?.['required']">Project Name is required.</small>
-            </span>
-    </div>
-    <button nbButton Class="btn btn-warning" (click)="addProject()">Add Organization</button>
-    <a (click)="open(deleteOption)" data-toggle="tooltip" data-placement="top" title="DELETE"
-       style="margin-left:10px">
-      <i class="fas fa-trash" style="color:red;"></i>
-    </a>
-    <ng-template #deleteOption let-c="close" let-d="dismiss">
-      <div class="modal-header sb-bg-dark" style="display:block">
-        <h4 class="modal-title pull-left text-white text-center" style="font-size: medium">
-          Are you sure you want to delete ?
-        </h4>
+<h4 class="mb-3">Projects</h4>
+
+<div class="card mb-4">
+  <div class="card-header">Add Project</div>
+  <div class="card-body">
+    <form [formGroup]="addForm" (ngSubmit)="addProject()">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="organizationName" class="form-label">Organization</label>
+          <select class="form-select" id="organizationName" formControlName="organizationName" [class.is-invalid]="invalid('organizationName')">
+            <option [ngValue]="null" disabled>Select an organization</option>
+            <option *ngFor="let org of organizationData" [ngValue]="org">{{ org.organizationName }}</option>
+          </select>
+          <div class="invalid-feedback">Organization is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="projectName" class="form-label">Project Name</label>
+          <input type="text" class="form-control" id="projectName" formControlName="projectName" [class.is-invalid]="invalid('projectName')">
+          <div class="invalid-feedback">Project Name is required.</div>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-sm" (click)="deleteApprovalLimit(allList.id)">Yes</button>
-        <button type="button" class="btn btn-primary btn-sm" (click)="onClose()">No</button>
+      <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="saving">{{ saving ? 'Adding...' : 'Add Project' }}</button>
       </div>
-    </ng-template>
-  </form>
+    </form>
+  </div>
+</div>
+
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-striped mb-0">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Project</th>
+      <th>Organization</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let project of projects; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ project.projectName }}</td>
+      <td>{{ project.organizationName?.organizationName }}</td>
+    </tr>
+    <tr *ngIf="projects.length === 0">
+      <td colspan="3" class="text-muted text-center">No projects yet.</td>
+    </tr>
+    </tbody>
+  </table>
 </div>

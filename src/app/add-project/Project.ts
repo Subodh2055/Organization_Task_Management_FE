@@ -1,5 +1,7 @@
+import {Organization} from "../add-organization/Organization";
+
 export class Project{
   id: number;
-  organizationName: string;
+  organizationName: Organization;
   projectName: string;
 }

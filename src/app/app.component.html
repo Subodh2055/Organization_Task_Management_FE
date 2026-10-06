@@ -1,43 +1,39 @@
 <div>
   <nav class="navbar navbar-expand-lg" style="background-color: lightgreen; color: navy">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"> Organization Task Management</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" routerLink="/"> Organization Task Management</a>
+      <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+              aria-controls="navbarSupportedContent" [attr.aria-expanded]="!isCollapsed" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <strong><a class="nav-link active" aria-current="page" href="#">Home</a></strong>
+            <strong><a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></strong>
           </li>
-          <li class="nav-item">
-            <strong><a class="nav-link" routerLink="/add-organization">Add Organization</a></strong>
-          </li>
-          <li class="nav-item">
-            <strong><a class="nav-link" routerLink="/add-project">Add Project</a></strong>
-          </li>
-          <li class="nav-item">
-            <strong><a class="nav-link" routerLink="/signUp">Register Client</a></strong>
-          </li>
-          <li class="nav-item">
-            <strong><a class="nav-link" routerLink="/signIn">Sign In</a></strong>
-          </li>
-          <!--        <li class="nav-item">-->
-          <!--          <a class="nav-link" routerLink="/request-clarification">Request Clarification</a>-->
-          <!--        </li>-->
-          <li class="nav-item">
-            <strong><a class="nav-link" routerLink="/clarification-list">Clarification List</a></strong>
+          <ng-container *ngIf="!authService.isLoggedIn">
+            <li class="nav-item">
+              <strong><a class="nav-link" routerLink="/signIn" routerLinkActive="active">Sign In</a></strong>
+            </li>
+            <li class="nav-item">
+              <strong><a class="nav-link" routerLink="/signUp" routerLinkActive="active">Register</a></strong>
+            </li>
+          </ng-container>
+          <li class="nav-item" *ngIf="authService.isLoggedIn">
+            <strong><a class="nav-link" [routerLink]="authService.homeUrl()" routerLinkActive="active">My Portal</a></strong>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        <div class="d-flex align-items-center gap-3" *ngIf="authService.isLoggedIn">
+          <span>
+            {{ authService.user?.fullName }}
+            <span class="badge text-bg-dark ms-1">{{ authService.role }}</span>
+          </span>
+          <button class="btn btn-outline-dark btn-sm" type="button" (click)="logout()">Logout</button>
+        </div>
       </div>
     </div>
   </nav>
 </div>
 <!-- Page Content  -->
 <router-outlet></router-outlet>
-
+<app-toast-container></app-toast-container>

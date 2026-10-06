@@ -1,0 +1,247 @@
+❯ Building...
+✔ Building...
+Initial chunk files | Names         |  Raw size
+main.js             | main          |   2.64 MB | 
+styles.css          | styles        | 391.63 kB | 
+polyfills.js        | polyfills     |  94.86 kB | 
+
+                    | Initial total |   3.13 MB
+
+Application bundle generation complete. [5.844 seconds] - 2026-10-06T03:57:44.302Z
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.html:14:114:
+      14 │ ...rganizationName'].errors?.['required']">Organization Name is re...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component AddOrganizationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.ts:12:15:
+      12 │   templateUrl: './add-organization.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.html:28:101:
+      28 │ ...ontrol['address'].errors?.['required']">Address is required.</s...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component AddOrganizationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.ts:12:15:
+      12 │   templateUrl: './add-organization.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.html:43:97:
+      43 │ ...mControl['phone'].errors?.['required']">Phone Number is require...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component AddOrganizationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.ts:12:15:
+      12 │   templateUrl: './add-organization.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.html:58:97:
+      58 │ ...mControl['email'].errors?.['required']">Email is required. </sm...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component AddOrganizationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-organization/add-organization.component.ts:12:15:
+      12 │   templateUrl: './add-organization.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-project/add-project.component.html:23:104:
+      23 │ ...ol['projectName'].errors?.['required']">Project Name is require...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component AddProjectComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/add-project/add-project.component.ts:13:15:
+      13 │   templateUrl: './add-project.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.html:15:98:
+      15 │ ...ntrol['fullName'].errors?.['required']">Full Name is required.<...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component SignupComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.ts:13:15:
+      13 │   templateUrl: './signup.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.html:30:104:
+      30 │ ...ol['designation'].errors?.['required']">Designation Name is req...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component SignupComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.ts:13:15:
+      13 │   templateUrl: './signup.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.html:45:92:
+      45 │ ...mControl['email'].errors?.['required']">Email is required.</small>
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component SignupComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.ts:13:15:
+      13 │   templateUrl: './signup.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.html:63:94:
+      63 │ ...Control['mobile'].errors?.['required']">Mobile Number is requir...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component SignupComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.ts:13:15:
+      13 │   templateUrl: './signup.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.html:77:98:
+      77 │ ...ntrol['userName'].errors?.['required']">UserName is required.</...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component SignupComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/signup/signup.component.ts:13:15:
+      13 │   templateUrl: './signup.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/login/login.component.html:54:103:
+      54 │ ...ntrol['username'].errors?.['required']">UserName is required</s...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component LoginComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/login/login.component.ts:13:15:
+      13 │   templateUrl: './login.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/login/login.component.html:67:103:
+      67 │ ...ntrol['password'].errors?.['required']">Password is required</s...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component LoginComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/login/login.component.ts:13:15:
+      13 │   templateUrl: './login.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:14:96:
+      14 │ ...ontrol['subject'].errors?.['required']">Subject is required.</s...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:29:126:
+      29 │ ...cationRequested'].errors?.['required']">Clarification Request i...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:43:99:
+      43 │ ...Control['module'].errors?.['required']">Module is required.</sm...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:59:104:
+      59 │ ...ol['requestedBy'].errors?.['required']">Requested By is require...
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:83:127:
+      83 │ ...dDateForClosure'].errors?.['required']">Date is required. </small>
+         ╵                               ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+▲ [WARNING] NG8107: NG8107: The left side of this optional chain operation does not include 'null' or 'undefined' in its type, therefore the '?.' operator can be safely removed. Find more at https://v22.angular.dev/extended-diagnostics/NG8107 [plugin angular-compiler]
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.html:101:110:
+      101 │ ...emailReference'].errors?.['required']">Email is required. </sm...
+          ╵                              ~~~~~~~~~~
+
+  Warning occurs in the template of component RequestClarificationComponent.
+
+    C:/Users/Subodh-pc/Documents/Own/organization/Organization_Task_Management_FE/src/app/request-clarification/request-clarification.component.ts:11:15:
+      11 │   templateUrl: './request-clarification.component.html',
+         ╵                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Output location: C:\Users\Subodh-pc\Documents\Own\organization\Organization_Task_Management_FE\dist\organization_task_management
+

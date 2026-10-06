@@ -3,7 +3,8 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {RequestClarification} from "./RequestClarification";
-import {Organization} from "../add-organization/Organization";
+
+export type ClarificationScope = 'all' | 'assigned' | 'requested';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +14,30 @@ export class RequestclarificationService {
 
   constructor(private http: HttpClient) { }
 
+  /** Admin only. */
   public getRequestClarification(): Observable<RequestClarification[]>{
     return this.http.get<RequestClarification[]>(`${this.ApiServiceUrl}/api/clarification/all`)
   }
 
-  public addRequestClarification(requestClarification: RequestClarification): Observable<RequestClarification>{
+  /** assigned: requested from me. requested: raised by me. */
+  public getMyClarifications(scope: 'assigned' | 'requested'): Observable<RequestClarification[]>{
+    return this.http.get<RequestClarification[]>(`${this.ApiServiceUrl}/api/clarification/mine`, {params: {scope}})
+  }
+
+  public getClarifications(scope: ClarificationScope): Observable<RequestClarification[]>{
+    return scope === 'all' ? this.getRequestClarification() : this.getMyClarifications(scope);
+  }
+
+  public addRequestClarification(requestClarification: Partial<RequestClarification>): Observable<RequestClarification>{
     return this.http.post<RequestClarification>(`${this.ApiServiceUrl}/api/clarification/add`, requestClarification)
   }
-  public getUser(): Observable<RequestClarification[]>{
-    return this.http.get<RequestClarification[]>(`${this.ApiServiceUrl}/api/users/all`)
-  }
-  public getRequestClarificationById(id: number): Observable<any>{
-    return this.http.get(`${this.ApiServiceUrl}/api/clarification/find/${id}`)
+
+  public getRequestClarificationById(id: number): Observable<RequestClarification>{
+    return this.http.get<RequestClarification>(`${this.ApiServiceUrl}/api/clarification/find/${id}`)
   }
 
-  public updateClarificationById(clarificationId: number, requestClarification: RequestClarification): Observable<RequestClarification> {
-    return this.http.put<RequestClarification>(`${this.ApiServiceUrl}/api/clarification/update/${clarificationId}`, requestClarification)
-
-  }
-
-  public updateClarification(requestClarification: RequestClarification, id: number): Observable<RequestClarification> {
-    return this.http.put<RequestClarification>(`${this.ApiServiceUrl}/api/clarification/update/${id}`, requestClarification)
-
+  /** Only the user the clarification was requested from can answer it. */
+  public answerClarification(id: number, provideClarification: string): Observable<RequestClarification> {
+    return this.http.patch<RequestClarification>(`${this.ApiServiceUrl}/api/clarification/${id}/answer`, {provideClarification})
   }
 }

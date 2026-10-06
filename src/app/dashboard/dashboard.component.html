@@ -1,0 +1,23 @@
+<h4 class="mb-1">Welcome, {{ authService.user?.fullName }}</h4>
+<p class="text-muted mb-4">
+  <span *ngIf="authService.role === 'ADMIN'">Manage organizations, projects, users and every clarification.</span>
+  <span *ngIf="authService.role === 'STAFF'">Answer what customers ask you, and ask customers for clarification.</span>
+  <span *ngIf="authService.role === 'CUSTOMER'">Answer what staff ask you, and ask staff for clarification.</span>
+</p>
+
+<div *ngIf="loading" class="text-muted">Loading...</div>
+
+<div class="row g-3" *ngIf="!loading">
+  <div class="col-sm-6 col-xl-4" *ngFor="let card of cards">
+    <a class="card h-100 text-decoration-none border-{{ card.tone }}" [routerLink]="card.link">
+      <div class="card-body">
+        <div class="display-6 fw-semibold text-{{ card.tone }}">{{ card.value }}</div>
+        <div class="text-body">{{ card.label }}</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="mt-4" *ngIf="!loading && authService.role !== 'ADMIN'">
+  <a class="btn btn-primary" [routerLink]="authService.homeUrl() + '/new-request'">New clarification request</a>
+</div>

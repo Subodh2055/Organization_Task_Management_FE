@@ -1,33 +1,40 @@
 import {Injectable} from '@angular/core';
-import {NbComponentStatus, NbToastrService} from '@nebular/theme';
 import {Alert, AlertType} from "./Alert";
+
+export interface Toast {
+  message: string;
+  classes: string;
+  delay: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
 
-  constructor(private service: NbToastrService) {
-
-  }
+  toasts: Toast[] = [];
 
   public show(alert: Alert) {
-    const config = {status: this.getStatus(alert.type), duration: 6000};
-    this.service.show(alert.type, alert.message, config);
+    this.toasts.push({message: alert.message, classes: this.getClasses(alert.type), delay: 6000});
   }
 
-  private getStatus(type: AlertType): NbComponentStatus {
+  public remove(toast: Toast) {
+    this.toasts = this.toasts.filter(t => t !== toast);
+  }
+
+  private getClasses(type: AlertType): string {
     switch (type) {
-      case AlertType.ERROR:
-        return 'danger';
       case AlertType.SUCCESS:
-        return AlertType.SUCCESS;
+        return 'bg-success text-white';
+      case AlertType.ERROR:
+      case AlertType.DANGER:
+        return 'bg-danger text-white';
       case AlertType.WARNING:
-        return AlertType.WARNING;
+        return 'bg-warning text-dark';
       case AlertType.INFO:
-        return AlertType.INFO;
+        return 'bg-info text-dark';
       default:
-        return 'primary';
+        return 'bg-primary text-white';
     }
   }
 }

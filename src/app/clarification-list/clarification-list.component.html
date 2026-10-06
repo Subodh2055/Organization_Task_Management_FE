@@ -1,86 +1,78 @@
-<div class="col-md-12">
-  <div class="container">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Subject</th>
-        <th>Clarification Request</th>
-        <th>Module</th>
-        <th>Requested By</th>
-        <th>Requested To</th>
-        <th>Requested Date</th>
-        <th>Expected Date For Closure</th>
-        <th>Provide Clarification</th>
-<!--        <th>Clarification Provided By</th>-->
-        <th>Clarified Date</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let data of clarificationData | paginate: {itemsPerPage: 5, currentPage: p}; let i = index;">
-        <td>{{i+1}}</td>
-        <td>{{data?.subject}}</td>
-        <td>{{data?.clarificationRequested}}</td>
-        <td>{{data?.module}}</td>
-        <td>{{data?.requestedBy}}</td>
-        <td>{{data?.requestedTo.userName}}</td>
-        <td>{{data?.requestedDate |  date:'medium'}}</td>
-        <td>{{data?.expectedDateForClosure |  date:'medium'}}</td>
-        <td>{{data?.provideClarification}}</td>
-<!--        <td>{{data?.clarificationProvidedBy}}</td>-->
-        <td>{{data?.clarifiedDate |  date:'medium'}}</td>
-        <td *ngIf="data?.clarifiedDate === null">Pending</td>
-        <td *ngIf="data?.clarifiedDate !== null">closed</td>
-        <td>
-
-          <button class="btn btn-primary" (click)="open(template,data?.id)">Provide Clarification</button>
-
-          <ng-template #template let-c="close" let-d="dismiss">
-            <div class="modal-header d-flex justify-content-end">
-              <button type="button" class="close pull-right" aria-label="Close" (click)="d('cross click')">
-                <span aria-hidden="true" >×</span>
-              </button>
-            </div>
-
-            <div class="modal-body">
-              <form  [formGroup]="clarificationForm">
-                <div class="row">
-                  <input hidden formControlName="id">
-                  <input hidden formControlName="requestedDate">
-                  <input hidden formControlName="expectedDateForClosure">
-                  <input hidden formControlName="requestedTo">
-                  <input hidden formControlName="emailReference">
-                  <input hidden formControlName="clarificationRequested">
-                  <input hidden formControlName="clarificationProvidedBy">
-                  <input hidden formControlName="module">
-                  <input hidden formControlName="subject">
-                  <div class="col-md-12">
-                    <label for="provideClarification">Provide Clarification</label>
-                    <input class="form-control" type="text" formControlName="provideClarification" id="provideClarification">
-                  </div>
-                  <div class="col-md-12 mt-2">
-                    <label for="clarifiedDate">Clarified Date</label>
-                    <input class="form-control" type="date" formControlName="clarifiedDate" id="clarifiedDate">
-                  </div>
-                </div>
-
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" (click)="updateClarification(data?.id)" class="btn btn-default" >Save</button>
-            </div>
-          </ng-template>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
-
-  </div>
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h4 class="mb-0">{{ title }}</h4>
+  <button class="btn btn-outline-secondary btn-sm" (click)="getAllClarification()">Refresh</button>
 </div>
 
+<div *ngIf="loading" class="text-muted">Loading...</div>
+<div *ngIf="!loading && clarificationData.length === 0" class="alert alert-light border">{{ emptyText }}</div>
 
+<div class="table-responsive bg-white border rounded" *ngIf="!loading && clarificationData.length > 0">
+  <table class="table table-striped align-middle mb-0">
+    <thead>
+    <tr>
+      <th>S.No</th>
+      <th>Subject</th>
+      <th>Clarification Request</th>
+      <th>Module</th>
+      <th>Requested By</th>
+      <th>Requested To</th>
+      <th>Requested Date</th>
+      <th>Expected Closure</th>
+      <th>Clarification</th>
+      <th>Clarified Date</th>
+      <th>Status</th>
+      <th *ngIf="scope === 'assigned'">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of clarificationData | paginate: {itemsPerPage: pageSize, currentPage: p}; let i = index;">
+      <td>{{ (p - 1) * pageSize + i + 1 }}</td>
+      <td>{{ data.subject }}</td>
+      <td>{{ data.clarificationRequested }}</td>
+      <td>{{ data.module }}</td>
+      <td>{{ data.requestedBy }}</td>
+      <td>{{ data.requestedTo?.fullName || data.requestedTo?.userName }}</td>
+      <td>{{ data.requestedDate | date:'medium' }}</td>
+      <td>{{ data.expectedDateForClosure | date:'mediumDate' }}</td>
+      <td>{{ data.provideClarification }}</td>
+      <td>{{ data.clarifiedDate | date:'medium' }}</td>
+      <td>
+        <span class="badge" [ngClass]="isPending(data) ? 'text-bg-warning' : 'text-bg-success'">
+          {{ isPending(data) ? 'Pending' : 'Closed' }}
+        </span>
+      </td>
+      <td *ngIf="scope === 'assigned'">
+        <button *ngIf="canAnswer(data)" class="btn btn-primary btn-sm" (click)="open(answerModal, data)">Provide Clarification</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<pagination-controls class="mt-3 d-block" *ngIf="clarificationData.length > pageSize" (pageChange)="p = $event"></pagination-controls>
 
-
+<ng-template #answerModal let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title">Provide Clarification</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="d('cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <dl class="row mb-3" *ngIf="selected">
+      <dt class="col-sm-3">Subject</dt>
+      <dd class="col-sm-9">{{ selected.subject }}</dd>
+      <dt class="col-sm-3">Asked by</dt>
+      <dd class="col-sm-9">{{ selected.requestedBy }}</dd>
+      <dt class="col-sm-3">Question</dt>
+      <dd class="col-sm-9">{{ selected.clarificationRequested }}</dd>
+    </dl>
+    <form [formGroup]="answerForm">
+      <label for="provideClarification" class="form-label">Your clarification</label>
+      <textarea class="form-control" id="provideClarification" rows="4" formControlName="provideClarification"
+                [class.is-invalid]="answerForm.get('provideClarification')?.touched && answerForm.get('provideClarification')?.invalid"></textarea>
+      <div class="invalid-feedback">Clarification is required.</div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d('cancel')">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="saving" (click)="updateClarification()">{{ saving ? 'Saving...' : 'Save' }}</button>
+  </div>
+</ng-template>

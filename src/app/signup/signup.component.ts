@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Organization} from "../add-organization/Organization";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {SignupService} from "./signup.service";
@@ -6,9 +6,13 @@ import {SignUp} from "./SignUp";
 import {AddOrganizationServiceService} from "../add-organization/add-organization-service.service";
 import {ObjectUtil} from "../ObjectUtil";
 import {Router} from "@angular/router";
+import {ToastService} from "../ToastService";
+import {Alert, AlertType} from "../Alert";
 
 @Component({
   selector: 'app-signup',
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
@@ -32,6 +36,7 @@ export class SignupComponent implements OnInit {
     private signupService: SignupService,
     private formBuilder: FormBuilder,
     private addOrganizationServiceService: AddOrganizationServiceService,
+    private toastService: ToastService,
   ) {
   }
 
@@ -55,8 +60,12 @@ export class SignupComponent implements OnInit {
     } else {
       this.signupService.addUser(this.addForm.value).subscribe(
         response => {
+          this.toastService.show(new Alert(AlertType.SUCCESS, response || 'User registered successfully'));
+          this.nextToSignIn();
+        },
+        error => {
+          this.toastService.show(new Alert(AlertType.ERROR, typeof error.error === 'string' && error.error ? error.error : 'Failed to register user'));
         });
-      this.nextToSignIn();
     }
   }
 
@@ -96,28 +105,25 @@ export class SignupComponent implements OnInit {
   }
 
   getOrganizationByEmail($event: FocusEvent) {
-    this.addOrganizationServiceService.getOrganizationByEmail(this.addForm.get('email')?.value).subscribe(
+    const email = this.addForm.get('email')?.value;
+    if (!email) {
+      return;
+    }
+    this.signupService.checkAvailability({email}).subscribe(
       response => {
-        this.mail = response;
-        if (this.mail !== null) {
-          this.alreadyUsed = true
-        } else {
-          this.alreadyUsed = false;
-        }
-
+        this.alreadyUsed = response.emailTaken;
       }
     )
   }
 
   getByUserName(event: any) {
-    this.signupService.getByUserName(event.target.value).subscribe(
+    const userName = event.target.value;
+    if (!userName) {
+      return;
+    }
+    this.signupService.checkAvailability({userName}).subscribe(
       response => {
-        this.userName1 = response;
-        if (this.userName1 !== null) {
-          this.alreadyUse = true;
-        } else {
-          this.alreadyUse = false;
-        }
+        this.alreadyUse = response.userNameTaken;
       }
     )
   }

@@ -1,80 +1,66 @@
-<div class="form-box">
-  <form [formGroup]="addForm">
-    <div class="row col-md-12">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="organizationName" style="color: white; font-size: large">Organization Name</label>
-          <input class='form-control' id="organizationName"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['organizationName']?.errors, 'is-valid': addFormControl['organizationName']?.valid }"
-                 formControlName='organizationName'>
-          <span
-            *ngIf="submitted || addFormControl['organizationName'].touched || addFormControl['organizationName'].dirty && addFormControl['organizationName'].invalid"
-            class="info-msg text-danger">
-                <small
-                  *ngIf="addFormControl['organizationName'].errors && addFormControl['organizationName'].errors?.['required']">Organization Name is required.</small>
-            </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="address" style="color: white; font-size: large">Address</label>
-          <input id="address"
-                 class='form-control'
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['address']?.errors, 'is-valid': addFormControl['address']?.valid }"
-                 formControlName='address'/>
-          <span
-            *ngIf="submitted || addFormControl['address'].touched || addFormControl['address'].dirty && addFormControl['address'].invalid"
-            class="info-msg text-danger">
-                <small *ngIf="addFormControl['address'].errors && addFormControl['address'].errors?.['required']">Address is required.</small>
-            </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="phone" style="color: white; font-size: large">Phone</label><br>
-          <input type="number"
-                 id="phone"
-                 class='form-control'
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['phone']?.errors, 'is-valid': addFormControl['phone']?.valid }"
-                 formControlName='phone' ngModel/>
-          <span
-            *ngIf="submitted || addFormControl['phone'].touched || addFormControl['phone'].dirty && addFormControl['phone'].invalid"
-            class="info-msg text-danger">
-                <small *ngIf="addFormControl['phone'].errors && addFormControl['phone'].errors?.['required']">Phone Number is required.</small>
-            </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="email" style="color: white; font-size: large">Email</label><br>
-          <input type="email"
-                 id="email"
-                 class='form-control'
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': addFormControl['email']?.valid }"
-                 formControlName='email' ngModel/>
-          <span
-            *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid"
-            class="info-msg text-danger">
-                <small *ngIf="addFormControl['email'].errors && addFormControl['email'].errors?.['required']">Email is required. </small>
-            </span>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="website" style="color: white; font-size: large">Website</label><br>
-          <input id="website"
-                 class='form-control'
-                 formControlName='website' ngModel/>
-        </div>
-      </div>
-      <div class="row d-flex justify-content-center">
+<h4 class="mb-3">Organizations</h4>
+
+<div class="card mb-4">
+  <div class="card-header">Add Organization</div>
+  <div class="card-body">
+    <form [formGroup]="addForm" (ngSubmit)="addOrganization()">
+      <div class="row g-3">
         <div class="col-md-6">
-          <button nbButton Class="btn btn-secondary" (click)="addOrganization()">Add Organization</button>
+          <label for="organizationName" class="form-label">Organization Name</label>
+          <input class="form-control" id="organizationName" formControlName="organizationName" [class.is-invalid]="invalid('organizationName')">
+          <div class="invalid-feedback">Organization Name is required.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="address" class="form-label">Address</label>
+          <input class="form-control" id="address" formControlName="address" [class.is-invalid]="invalid('address')">
+          <div class="invalid-feedback">Address is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone" formControlName="phone" [class.is-invalid]="invalid('phone')">
+          <div class="invalid-feedback">Phone Number is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email" [class.is-invalid]="invalid('email')">
+          <div class="invalid-feedback">A valid email is required.</div>
+        </div>
+        <div class="col-md-4">
+          <label for="website" class="form-label">Website</label>
+          <input class="form-control" id="website" formControlName="website">
         </div>
       </div>
-    </div>
-  </form>
+      <div class="d-flex justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="saving">{{ saving ? 'Adding...' : 'Add Organization' }}</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-
-
+<div class="table-responsive bg-white border rounded">
+  <table class="table table-striped mb-0">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Website</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let org of organizations; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ org.organizationName }}</td>
+      <td>{{ org.address }}</td>
+      <td>{{ org.phone }}</td>
+      <td>{{ org.email }}</td>
+      <td>{{ org.website }}</td>
+    </tr>
+    <tr *ngIf="organizations.length === 0">
+      <td colspan="6" class="text-muted text-center">No organizations yet.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

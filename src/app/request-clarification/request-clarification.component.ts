@@ -1,75 +1,91 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {RequestClarification} from "./RequestClarification";
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestclarificationService} from "./requestclarification.service";
-import {Router, Routes} from "@angular/router";
-import {ObjectUtil} from "../ObjectUtil";
+import {Router} from "@angular/router";
+import {ToastService} from "../ToastService";
+import {Alert, AlertType} from "../Alert";
+import {AuthService} from "../core/auth.service";
+import {UserService} from "../users/user.service";
+import {AppUser} from "../core/auth.models";
 
+/** Staff ask customers and customers ask staff; the server records who asked and when. */
 @Component({
   selector: 'app-request-clarification',
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './request-clarification.component.html',
   styleUrls: ['./request-clarification.component.scss']
 })
 export class RequestClarificationComponent implements OnInit {
   submitted: boolean = false
-  requestClarification: RequestClarification;
-  requestClarifications: RequestClarification;
-  requestClarificationData: any;
-  @Input() formValue: RequestClarification;
+  saving: boolean = false
   addForm: FormGroup;
-  userData: any;
-
+  userData: AppUser[] = [];
+  readonly today = new Date().toISOString().slice(0, 10);
 
   constructor(
     private requestClarificationService: RequestclarificationService,
+    private userService: UserService,
     private formBuilder: FormBuilder,
-    private route: Router
+    private route: Router,
+    private toastService: ToastService,
+    public authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
     this.formMaker();
-    if (!ObjectUtil.isEmpty(this.formValue)) {
-      this.requestClarification = this.formValue;
-      this.formMaker();
-    }
     this.getUserData();
+  }
+
+  /** "customer" for staff, "staff member" for customers. */
+  get counterpartLabel(): string {
+    return this.authService.role === 'STAFF' ? 'customer' : 'staff member';
   }
 
   private formMaker() {
     this.addForm = this.formBuilder.group({
-      subject: [undefined, Validators.required],
-      clarificationRequested: [undefined, Validators.required],
-      module: [undefined, Validators.required],
-      requestedBy: [undefined],
-      requestedTo: [undefined],
-      expectedDateForClosure: [undefined],
-      emailReference: [undefined, Validators.compose([Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])],
+      subject: ['', Validators.required],
+      clarificationRequested: ['', Validators.required],
+      module: ['', Validators.required],
+      requestedTo: [null, Validators.required],
+      expectedDateForClosure: [''],
+      emailReference: ['', Validators.compose([Validators.required, Validators.email])],
     })
   }
 
 
   addRequestClarification() {
     this.submitted = true;
-    if (this.addForm.invalid) {
-    } else {
-      this.requestClarificationService.addRequestClarification(this.addForm.value).subscribe(
-        response => {
-          console.log(response, 'response')
-          this.nextToClarificationTable();
-        });
+    if (this.addForm.invalid || this.saving) {
+      return;
     }
+    this.saving = true;
+    const value = this.addForm.value;
+    const request = {
+      ...value,
+      requestedTo: {id: value.requestedTo},
+      expectedDateForClosure: value.expectedDateForClosure || null,
+    };
+    this.requestClarificationService.addRequestClarification(request).subscribe(
+      response => {
+        this.saving = false;
+        this.toastService.show(new Alert(AlertType.SUCCESS, 'Clarification requested successfully'));
+        this.route.navigateByUrl(`${this.authService.homeUrl()}/requests`);
+      },
+      error => {
+        this.saving = false;
+        this.toastService.show(new Alert(AlertType.ERROR, typeof error.error === 'string' && error.error ? error.error : 'Failed to request clarification'));
+      });
   }
 
   getUserData() {
-    this.requestClarificationService.getUser().subscribe(
+    this.userService.getAssignableUsers().subscribe(
       response => {
         this.userData = response;
-        console.log(this.userData, 'organization data')
-
       },
       error => {
-        console.log(error)
+        this.toastService.show(new Alert(AlertType.ERROR, 'Failed to load users'));
       }
     )
   }
@@ -78,9 +94,8 @@ export class RequestClarificationComponent implements OnInit {
     return this.addForm.controls;
   }
 
-  private nextToClarificationTable() {
-    this.route.navigate(['clarification-list'])
+  invalid(name: string): boolean {
+    const control = this.addFormControl[name];
+    return control.invalid && (control.touched || this.submitted);
   }
 }
-
-

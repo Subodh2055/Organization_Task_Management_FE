@@ -12,8 +12,8 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
-  public getProject(): Observable<Project>{
-    return this.http.get<Project>(`${this.ApiServiceUrl}/project/all`)
+  public getProject(): Observable<Project[]>{
+    return this.http.get<Project[]>(`${this.ApiServiceUrl}/api/projectcreation/all`)
   }
 
   public addProject(project: Project): Observable<any>{

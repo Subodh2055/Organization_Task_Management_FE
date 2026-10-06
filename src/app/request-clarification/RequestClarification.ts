@@ -1,3 +1,5 @@
+import {AppUser} from "../core/auth.models";
+
 export class RequestClarification{
   id: number;
   subject: string;
@@ -5,10 +7,10 @@ export class RequestClarification{
   module: string;
   requestedDate: string;
   requestedBy: string;
-  requestedTo: string;
-  expectedDateForClosure: string;
+  requestedTo: AppUser | null;
+  expectedDateForClosure: string | null;
   emailReference: string;
-  provideClarification: any;
-  clarificationProvidedBy: any;
-  clarifiedDate: any;
+  provideClarification: string | null;
+  clarificationProvidedBy: AppUser | null;
+  clarifiedDate: string | null;
 }

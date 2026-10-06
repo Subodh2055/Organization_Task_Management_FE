@@ -1,4 +1,5 @@
 <div class="form-box">
+  <div class="header-text mb-3" style="color: white; font-size: x-large">Create a customer account</div>
   <form [formGroup]="addForm">
     <div class="row col-md-12">
       <div class="col-md-6">
@@ -6,7 +7,7 @@
           <label style="color: white; font-size: large" for="fullName">Full Name</label>
           <input class='form-control'
                  id="fullName"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['fullName']?.errors, 'is-valid': addFormControl['fullName']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['fullName']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['fullName']?.valid) }"
                  formControlName='fullName'/>
           <span
             *ngIf="submitted || addFormControl['fullName'].touched || addFormControl['fullName'].dirty && addFormControl['fullName'].invalid"
@@ -21,7 +22,7 @@
           <label style="color: white; font-size: large" for="designation">Designation</label>
           <input class="form-control"
                  id="designation"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['designation']?.errors, 'is-valid': addFormControl['designation']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['designation']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['designation']?.valid) }"
                  formControlName='designation'/>
           <span
             *ngIf="submitted || addFormControl['designation'].touched || addFormControl['designation'].dirty && addFormControl['designation'].invalid"
@@ -36,7 +37,7 @@
           <label for="email" style="color: white; font-size: large">Email</label>
           <input (focusout)="getOrganizationByEmail($event)" class="form-control"
                  id="email"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': addFormControl['email']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['email']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['email']?.valid) }"
                  formControlName='email'/>
           <span
             *ngIf="submitted || addFormControl['email'].touched || addFormControl['email'].dirty && addFormControl['email'].invalid"
@@ -54,7 +55,7 @@
           <label for="mobile" style="color: white; font-size: large">Mobile</label>
           <input class="form-control"
                  id="mobile" type="number"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['mobile']?.errors, 'is-valid': addFormControl['mobile']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['mobile']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['mobile']?.valid) }"
                  formControlName='mobile'/>
           <span
             *ngIf="submitted || addFormControl['mobile'].touched || addFormControl['mobile'].dirty && addFormControl['mobile'].invalid"
@@ -68,7 +69,7 @@
         <div class="form-group">
           <label for="userName" style="color: white; font-size: large">UserName</label>
           <input class="form-control" id="userName"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['userName']?.errors, 'is-valid': addFormControl['userName']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['userName']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['userName']?.valid) }"
                  formControlName='userName' (focusout)="getByUserName($event)"/>
           <span
             *ngIf="submitted || addFormControl['userName'].touched || addFormControl['userName'].dirty && addFormControl['userName'].invalid"
@@ -87,7 +88,7 @@
           <label for="password" style="color: white; font-size: large">Password</label>
           <input class="form-control" id="password"
                  formControlName='password'
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': addFormControl['password']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['password']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['password']?.valid) }"
                  type="password"/>
           <span
             *ngIf="submitted || addFormControl['password']?.touched || addFormControl['password']?.dirty && addFormControl['password']?.invalid"
@@ -104,7 +105,7 @@
           <input class="form-control"
                  formControlName='passwordConfirm'
                  id="passwordConfirm"
-                 [ngClass]="{ 'is-invalid': submitted && addFormControl['passwordConfirm']?.errors, 'is-valid': addFormControl['passwordConfirm']?.valid }"
+                 [ngClass]="{ 'is-invalid': submitted && addFormControl['passwordConfirm']?.errors, 'is-valid': $safeNavigationMigration(addFormControl['passwordConfirm']?.valid) }"
                  type="password"/>
           <span
             *ngIf="submitted || addFormControl['passwordConfirm']?.touched || addFormControl['passwordConfirm']?.dirty && addFormControl['passwordConfirm']?.invalid"
@@ -131,7 +132,7 @@
     </div>
     <div class="row  d-flex justify-content-center">
       <div class="col-md-4">
-        <button nbButton Class="btn btn-warning" (click)="addUser()">Register User</button>
+        <button class="btn btn-warning" (click)="addUser()">Create Customer Account</button>
       </div>
     </div>
   </form>
